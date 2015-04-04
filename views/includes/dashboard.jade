@@ -2,11 +2,11 @@ div(class="DashboardProfileCard module")
     div(class="DashboardProfileCard-content")
         div(class="DashboardProfileCard-avatar")
             a(class="DashboardProfileCard-avatarLink u-inlineBlock", href="#", title="UserName")
-                img(class="DashboardProfileCard-avatarImage js-action-profile-avatar", src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xft1/v/t1.0-1/c58.0.200.200/p200x200/10174852_10203065988805647_1198654971551889226_n.jpg?oh=029c09b259b39d4be20bcdacc5755fdc&oe=55AE8FF2&__gda__=1436999408_b20c83fc6388b3b39c12bf20a86bb0af")
+                img(class="DashboardProfileCard-avatarImage js-action-profile-avatar", src="#{user.profileImageUrl}")
         div(class="DashboardProfileCard-userFields")
             div(class="DashboardProfileCard-name u-textTruncate")
                 a(href="#", class="u-textInheritColor")
-                    |Shivakumar N
+                    |#{user.name}
 
         div(class="DashboardProfileCard-stats")
             ul(class="DashboardProfileCard-statList Arrange Arrange--bottom Arrange--equal")
