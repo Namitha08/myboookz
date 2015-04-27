@@ -10,15 +10,17 @@
       "jade": "^1.7.0",
       "node-regexp": "0.1.1",
       "request": "2.53.0",
-	  "passport": "*",
-	  "passport-facebook": "*",
+	  "passport": "0.2.1",
+	  "passport-facebook": "2.0.0",
+      "passport-google-oauth2":"0.1.6",
       "node-rest-client": "*",
       "body-parser" : "~1.4.2",
       "method-override" : "~2.0.2",
       "passport-goodreads" : "*",
 	"goodreads" : "*",
       "xml2js": "*",
-      "oauth" : "*"
-      
+      "oauth" : "*",
+	"node-cache" : "*",
+      "moment" :"2.10.2"
   }
 }

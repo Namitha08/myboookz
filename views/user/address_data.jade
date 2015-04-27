@@ -1,0 +1,49 @@
+div(id="background-address-info-container", class="section-container background-section  draggable li-ig-profile", data-li-template="education_section")
+    div(id="background-address-info", class="section background-education", tabindex="0")
+        div(class="addressInfo-head-part")
+            div(class="row")
+                div(class="col-md-8 column")
+                    h3
+                        |Addresses
+                div(class="col-md-4 column")
+                    button(type="button" class="btn btn-primary scrollClick", id="address-info-add-button", scroll-to-id="#address-info-add")
+                        |Add(+)
+        div(id="address-info-display")
+            ol(class="no-list")
+                - var addresses = user.addresses;
+                - var n = user.addresses.length
+                - for(var i=0; i < n; i++) {
+                    li(class="inner-section entity section-item editable-item", id="address-info-#{addresses[i].id}")
+                        div(class="row clearfix", id="address-info-#{addresses[i].id}")
+                            div(class="col-md-12 column")
+                                div(class="row clearfix")
+                                    div(class="col-md-6 column")
+                                        h3 #{addresses[i].type}
+                                    div(class="col-md-6 column")
+                                        button(type="button", class="btn btn-default", id="address-info-edit-#{addresses[i].id}-button")
+                                            |Edit
+                                        button(type="button", class="btn btn-danger", id="address-info-delete-#{addresses[i].id}-button")
+                                            |Delete
+                                div(id="address-info-display")
+                                    fieldset(class="gllpLatlonPicker")
+                                        input(type="hidden", name="address[type]", value="#{addresses[i].type}", id="address-edit-#{addresses[i].id}-type")
+                                        input(type="hidden", name="address[id]", value="#{addresses[i].id}")
+                                        input(type="text", id="address-#{addresses[i].id}-edit-landmark", class="gllpSearchField address-info-#{addresses[i].id}-edit", name="address[landmark]", style="display:none;")
+                                        input(type="button", class="gllpSearchButton address-info-#{addresses[i].id}-edit", value="search", style="display:none;")
+                                        br
+                                        div(class="gllpMap")
+                                            | Google Maps
+                                        input(id="address--#{addresses[i].id}-edit-lat", type="text", class="gllpLatitude", value="#{addresses[i].latitude}", style="display:none")
+                                        input(id="address--#{addresses[i].id}-edit-long", type="text", class="gllpLongitude", value="#{addresses[i].longitude}", style="display:none")
+                                        input(type="text", class="gllpZoom", value="13", style="display:none")
+                                    button(type="button", id="address-info-#{addresses[i].id}-edit-save-button", class="btn btn-default address-info-#{addresses[i].id}-edit", style="display:none;")
+                                        |Update
+                                    button(type="button", id="address-info-#{addresses[i].id}-edit-cancel-button", class="btn btn-danger address-info-#{addresses[i].id}-edit", style="display:none;")
+                                        |Cancel
+                                script
+                                    $('#address-info-#{addresses[i].id}-edit-cancel-button').click(function(){$('.address-info-#{addresses[i].id}-edit').hide("slow");});
+                                    $('#address-info-edit-#{addresses[i].id}-button').click(function(){$('.address-info-#{addresses[i].id}-edit').show()});
+                                    $('#address-info-#{addresses[i].id}-edit-save-button').click(function(){var params = {address: {id: #{addresses[i].id}, type: $('#address-edit-#{addresses[i].id}-type').val(), latitude: $('#address--#{addresses[i].id}-edit-lat').val(), longitude: $('#address--#{addresses[i].id}-edit-long').val(), landmark: $('#address-#{addresses[i].id}-edit-landmark').val()}};var str = jQuery.param( params );$.ajax({url: '/api/address/#{addresses[i].id}', data: str ,type: 'PUT',success: function(response) {alert("success")}});});
+                                    $('#address-info-delete-#{addresses[i].id}-button').click(function(){$.ajax({url: '/api/address/#{addresses[i].id}',type: 'DELETE',success: function(response) {$('#address-info-#{addresses[i].id} div').each(function(i) {$(this).delay(200*i).fadeOut(1000);$(this).animate({"opacity" : "0"},{"complete" : function() {$('#address-info-#{addresses[i].id}').remove();}});});}});});
+                - }
+    include ./add_address

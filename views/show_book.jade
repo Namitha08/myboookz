@@ -1,0 +1,81 @@
+extends layout
+block content
+    div(id="page-container", class="AppContent main-wrapper container")
+        include ./includes/navbar.jade
+        div(class="row clearfix")
+            div(class="col-md-8 column")
+                div(class="row clearfix book-data")
+                    div(class="col-md-3 column")
+                        div(class="mainImage")
+                            img(src="#{book.imageUrl}")
+                    div(class="col-md-9 column")
+                            div(class="row clearfix")
+                                div(class="col-md-12 column")
+                                    h3 #{book.name}
+                            div(class="row clearfix")
+                                div(class="col-md-6 column")
+                                    div
+                                        strong Author-
+                                        |#{book.authorName}
+                                    div
+                                        strong Publisher-
+                                        |#{book.publisher}
+                                    div
+                                        strong Year-
+                                        |#{book.publishedYear}
+                                    div
+                                        strong ISBN -
+                                        |#{book.isbn}
+                                    div
+                                        strong ISBN13 -
+                                        |#{book.isbn13}
+                                div(class="col-md-6 column")
+                                    - if(book.bookType && (book.bookType === "WISH")) {
+                                        - if(book.additionalProperties != null && book.additionalProperties.recommendations.length > 0) {
+                                            - var grRecommendations = book.additionalProperties.recommendations
+                                            - console.log(JSON.stringify(grRecommendations) + "of length" + grRecommendations.length)
+                                            - var n = grRecommendations.length - 1;
+
+                                                div(class="engagement-card")
+                                                    div(class="engagement-body-left")
+                                                        a(href="#")
+                                                            img(src="#{grRecommendations[n].friendImageUrl}", class="book-image")
+                                                    div(class="engagement-body-right")
+                                                        a(href="#", class="book-name") 
+                                                            h3 #{grRecommendations[n].friendName}
+                                                        br
+                                                        button(class="btn-primary btn")
+                                                            |Ask for borrowing
+                                        - }
+                                    -}    
+
+                div(class="row clearfix")
+                    div(class="col-md-12 column")
+                        p #{book.description}
+                    div(class="col-md-12 column")
+                        - if(book.bookType && (book.bookType === "WISH")) {
+                            - if(book.additionalProperties != null && book.additionalProperties.recommendations.length > 0) {
+                                - var grRecommendations = book.additionalProperties.recommendations
+                                - console.log(JSON.stringify(grRecommendations) + "of length" + grRecommendations.length)
+                                - var n = grRecommendations.length - 2;
+                                h3 Recommendations
+                                - while(n >= 0) {
+                                    div(class="engagement-card")
+                                        div(class="engagement-body-left")
+                                            a(href="#")
+                                                img(src="#{grRecommendations[n].friendImageUrl}", class="book-image")
+                                        div(class="engagement-body-right")
+                                            a(href="#", class="book-name")
+                                                h3 #{grRecommendations[n].friendName}
+                                            br
+                                            button(class="btn-primary btn")
+                                                | Ask for borrowing
+                                    - n--;
+                                - }
+                            - }
+                            -}    
+                        
+                    
+            div(class="col-md-4 column")
+                        
+                

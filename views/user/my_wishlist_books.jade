@@ -1,0 +1,46 @@
+section(id="my-books", class="box-border")
+    header(class="my-books-header")
+        nav(id="my-books-navigation")
+            ul(id="my-books-search")
+                div(class="input-group")
+                    input(type="text", class="form-control", placeholder="Search for...")
+                    span(class="input-group-btn")
+                        button(class="btn btn-default", type="button")
+                            |Search
+    div(class="row books-list")
+        div(class="col-md-12 column")
+            div(class="row clearfix")
+                div(class="engagement-card engagement-sync-promo")
+                    div(class="col-md-12 column")
+                        li(class="")
+                            section(class="type-a")
+                                h3 Want to get more of these?
+            - var n = books.wishListBooks.length
+            - var i = 0
+            - while(n > 0){
+                - i = 0
+                div(class="row")
+                    - while(i < 2){
+                        - i = i+1
+                        - n = n-1
+                        - if(n >= 0) {
+                            - var book = books.wishListBooks[n]
+                            div(class="col-md-6 column")
+                                div(class="engagement-card")
+                                    div(class="engagement-body-left")
+                                        a(href="/books/#{book.id}")
+                                            img(src="#{book.imageUrl}", class="book-image")
+                                    div(class="engagement-body-right")
+                                        a(href="/books/#{book.id}", class="book-name") #{book.name}
+                                        br
+                                        p by
+                                            b(class="book-author-name") #{book.authorName}
+                                        p Description #{n}
+                                    div(class="engagement-action-container")
+                                        div(class="row")
+                                            div(class="col-md-12 column")
+                                                p 3 - Friends might ready to share
+
+                        - }
+                    - }
+            - }

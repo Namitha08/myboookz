@@ -1,0 +1,27 @@
+div(id="address-info-add", class="profile-blank-form")
+    h3 Add address
+    div(class="profile-blank-form-clone")
+        |Address type
+        select(class="form-control", id="address-add-type", name="address[type]")
+            option
+                |Home
+            option
+                |Work
+            option
+                |Hangout
+        fieldset(class="gllpLatlonPicker")
+            input(type="text", id="address-add-landmark", class="gllpSearchField", name="address[landmark]")
+            input(type="button", class="gllpSearchButton", value="search")
+            br
+            div(class="gllpMap")
+                |Google Maps
+            input(type="text", id="address-add-lat", class="gllpLatitude", value="12.97463381854107", name="address[latitude]", style="display:none;")
+            input(type="text", id="address-add-long", class="gllpLongitude", value="77.59234657922366", name="address[longitude]", style="display:none;")
+            input(type="text", class="gllpZoom", value="13", style="display:none")
+            input(type="button", class="gllpUpdateButton", value="update map", style="display:none")
+        button(type="button", id="address-add-save", class="btn btn-default")
+            |Add
+        button(type="button", id="address-info-add-cancel-button" + index, class="btn btn-default")
+            |Cancel
+    script
+        include submit_address.js

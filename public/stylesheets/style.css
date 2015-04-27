@@ -8,129 +8,19 @@
 /*
  * Nib provides a CSS reset
  */
-html,
-body,
-div,
-span,
-applet,
-object,
-iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-a,
-abbr,
-acronym,
-address,
-big,
-cite,
-code,
-del,
-dfn,
-em,
-img,
-ins,
-kbd,
-q,
-s,
-samp,
-small,
-strike,
-strong,
-sub,
-sup,
-tt,
-var,
-dl,
-dt,
-dd,
-ol,
-ul,
-li,
-fieldset,
-form,
-label,
-legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  outline: 0;
-  font-weight: inherit;
-  font-style: inherit;
-  font-family: inherit;
-  font-size: 100%;
-  vertical-align: baseline;
-}
-body {
-  line-height: 1;
-  color: #000;
-  background: #fff;
-}
-ol,
-ul {
-  list-style: none;
-}
-table {
-  border-collapse: separate;
-  border-spacing: 0;
-  vertical-align: middle;
-}
-caption,
-th,
-td {
-  text-align: left;
-  font-weight: normal;
-  vertical-align: middle;
-}
-a img {
-  border: none;
-}
-/*
- * Store the main color and
- * background color as variables
- */
-body {
-  font-family: 'Georgia';
-  background-color: #faf9f0;
-  color: #444;
-}
-header {
-  font-family: 'Quicksand';
-  padding: 50px 10px;
-  color: #fff;
-  font-size: 25px;
-  text-align: center;
-/*
-   * Note the use of the `main-color`
-   * variable and the `darken` function
-   */
-  background-color: #fa5b4d;
-  border-bottom: 1px solid #df1806;
-  text-shadow: 0px -1px 0px #df1806;
+
+
+.book-image{
+    width: 75px;
+    height: 100px;
+    
 }
 
 .sidebar {
-    position: fixed;
-
     bottom: 0;
     left: 0;
     z-index: 1000;
     display: block;
-
     overflow-x: hidden;
     overflow-y: auto;
     background-color: #f5f5f5;
@@ -140,11 +30,41 @@ header {
     width: 100%;
 }
 
+.mainImage {
+    width: 100%;
+    margin: 0;
+    display: flex;
+    align-items: stretch;
+    align-content: stretch;
+    position: relative;
+}
+
+.mainImage .imgWrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+}
+
+.book-data{
+    height: 200px;
+    
+}
+
+
 #profile {
     width: 646px;
     word-wrap: break-word;
     margin: auto;
-    
+}
+
+
+.engagement-action-container {
+    clear: both;
+    background-color: #ECECEC;
+    border-top: 1px solid #CDCDCD;
+    height: 35px;
 }
 
 #top-card {
@@ -383,6 +303,33 @@ caption, th, td {
     font-weight: lighter;
 }
 
+#my-books-navigation {
+    border-bottom: 1px solid #e7e7e7;
+    position: relative;
+    color: #333;
+    height: 35px;
+}
+
+#my-books-search {
+    list-style: none;
+    text-align: right;
+    display: block;
+    width: 243px;
+    float: right;
+}
+
+#my-books-search li {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    display: block;
+    margin-right: 10px;
+    position: relative;
+    float: right;
+    height: 35px;
+    padding: 6px 0;
+}
+
 .field .field-text {
     display: inline-block;
     border: 1px solid transparent;
@@ -405,7 +352,65 @@ caption, th, td {
     margin-bottom: 0;
 }
 
+.gllpMap	{ width: 500px; height: 250px; }
 
+.gllpLatlonPicker	{ margin: 20px 0; }
+
+.engagement-card.engagement-sync-promo {
+    background: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+a:visited {
+    color: #0073B2;
+    text-decoration: none;
+}
+a:link {
+    color: #0073B2;
+    text-decoration: none;
+}
+
+.engagement-sync-promo>section.type-a {
+    margin-right: 15px;
+}
+
+.engagement-sync-promo>section {
+    background: #333;
+    padding: 20px;
+}
+
+.engagement-body-left {
+    float: left;
+    height: 100px;
+    width: 75px;
+    position: relative;
+    overflow: hidden;
+}
+
+.books-list {
+    list-style: none;
+    margin-bottom: 15px;
+    margin-left: 30px;
+}
+
+.engagement-card {
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15),-1px 0 0 rgba(0,0,0,0.03),1px 0 0 rgba(0,0,0,0.03),0 1px 0 rgba(0,0,0,0.12);
+    -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.15),-1px 0 0 rgba(0,0,0,0.03),1px 0 0 rgba(0,0,0,0.03),0 1px 0 rgba(0,0,0,0.12);
+    box-shadow: 0 1px 1px rgba(0,0,0,0.15),-1px 0 0 rgba(0,0,0,0.03),1px 0 0 rgba(0,0,0,0.03),0 1px 0 rgba(0,0,0,0.12);
+    -webkit-transition: opacity 0.4s linear,-webkit-transform 0.4s linear;
+    -moz-transition: opacity 0.4s linear,-moz-transform 0.4s linear;
+    -o-transition: opacity 0.4s linear,-o-transform 0.4s linear;
+    transition: opacity 0.4s linear,transform 0.4s linear;
+    float: left;
+    background-color: white;
+    width: 275px;
+    position: relative;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-left: 1px;
+}
 
 p {
   line-height: 1.8;

@@ -1,0 +1,46 @@
+extends layout
+block content
+    div(id="page-container", class="AppContent main-wrapper container")
+        include ./includes/navbar.jade
+        div(class="row clearfix")
+            div(class="dashboard dashboard-left")
+
+            div(class="content-main")
+                section
+                    div(class="tabs tabs-style-topline")
+                        nav
+                            ul
+                                li(class="tab-current")
+                                    a(href="#section-topline-1", id="my-bookd-tab1", class="icon icon-home")
+                                        span Home
+                                li(class="")
+                                    a(href="#section-topline-2", id="my-bookd-tab2", class="icon icon-gift")
+                                        span Deals
+                                    
+                                li(class="")
+                                    a(href="#section-topline-3", id="my-bookd-tab3", class="icon icon-upload")
+                                        span Upload
+                                li
+                                    a(href="#section-topline-4", class="icon icon-coffee")
+                                        span Work
+                                li
+                                    a(href="#section-topline-5", class="icon icon-config")
+                                        span Settings
+                                script
+                                    $('#my-bookd-tab1').click(function(){alert("my-bookd-tab1");});
+                                    $('#my-bookd-tab2').click(function(){alert("my-bookd-tab2");});
+
+                            
+                        div(class="content-wrap")
+                            section(id="section-topline-1", class="content-current")
+                                p 1
+                            section(id="section-topline-2", class="")
+                                p 2
+                            section(id="section-topline-3", class="")
+                                p 3
+                            section(id="section-topline-4", class="")
+                                p 4
+                            section(id="section-topline-5", class="")
+                                p 5
+                        script
+                            include ./tab.js

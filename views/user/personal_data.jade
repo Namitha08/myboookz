@@ -1,0 +1,49 @@
+div(id="background", class="profile-background my-profile")
+    div(id="background-additional-info-container", class="section-container background-section  draggable li-ig-profile", data-li-template="education_section")
+        div(id="background-additional-info", class="section background-education", tabindex="0")
+            div(class="personalInfo-head-part")
+                div(class="row")
+                    div(class="col-md-8 column")
+                        h3
+                            |Personal Info.
+                    div(class="col-md-4 column")
+                        button(type="button" class="btn btn-default", id="personal-info-edit-button")
+                            |Edit
+            div(id="personal-info-display")
+                ol(class="no-list")
+                    li(id="personal-info", class="inner-section entity section-item editable-item")
+                        h4(class="main-header-field")
+                            |Contact Details
+                        table
+                            tbody
+                                tr
+                                    th(class="personal-header", scope="row")
+                                        |Ph. no
+                                    td(class="field")
+                                        span(class="field-text")
+                                            |#{user.phone}
+                                tr
+                                    th(class="personal-header", scope="row")
+                                        |email
+                                    td(class="field")
+                                        span(class="field-text")
+                                            |#{user.email}
+            div(id="personal-info-edit", class="profile-blank-form", style="display:none;")
+                div(class="profile-blank-form-clone")
+                    form(class="standard-form stacked", name="editPersonalInfoForm", method="POST", action="#", role="form")
+                        div(class="form-group")
+                            label(for="email-personal-info")
+                                |Email
+                            input(type="email", class="form-control", id="personal-info-email", value="#{user.email}")
+                        div(class="form-group")
+                            label(for="phone-personal-info")
+                                |Phone No.
+                            input(type="text", class="form-control", id="personal-info-phone", value="#{user.phone}")
+
+                        button(type="submit", class="btn btn-default")
+                            |Submit
+                        button(type="button", id="personal-info-edit-cancel-button", class="btn btn-default")
+                            | Cancel
+            script
+                $("#personal-info-edit-button").click(function(){$("#personal-info-edit").animate({height: 'toggle'});$("#personal-info-display").animate({height: 'toggle'});});
+                $("#personal-info-edit-cancel-button").click(function(){$("#personal-info-edit").animate({height: 'toggle'});$("#personal-info-display").animate({height: 'toggle'});});
