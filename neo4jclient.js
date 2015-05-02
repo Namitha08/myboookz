@@ -39,6 +39,7 @@ client.registerMethod("getAvailableBooks", baseUrl + "/users/${userId}/books", "
 client.registerMethod("getLentBooks", baseUrl + "/users/${userId}/books", "GET"); // ?filter=lent
 client.registerMethod("getBorrowedBooks", baseUrl + "/users/${userId}/books", "GET"); // ?filter=borrowed
 client.registerMethod("getReadBooks", baseUrl + "/users/${userId}/books", "GET"); // ?filter=read
+client.registerMethod("getWishListBooks", baseUrl + "/users/${userId}/books", "GET"); // ?filter=wishList
 
 client.registerMethod("getFollowersOfUser", baseUrl + "/users/${userId}/followers", "GET");
 client.registerMethod("getFollowing", baseUrl + "/users/${userId}/following", "GET");
@@ -57,8 +58,8 @@ client.registerMethod("getBookRelatedToUser", baseUrl + "/books/${bookId}/users/
 
 client.registerMethod("borrowBook", baseUrl + "/books/${bookId}/borrow", "POST"); // -POST borrow request object
 
-client.registerMethod("updateStatusToAgreed", baseUrl + "/books/${bookId}/user/${userId}", ""); // ?status=agreed&borrowerId=xyz - Which will lock the book for the exchange
-client.registerMethod("updateStatusToSuccess", baseUrl + "/books/${bookId}/user/${userId}", ""); // ?status=success&borrowerId=xyz
+client.registerMethod("updateStatusToAgreed", baseUrl + "/books/${bookId}/user/${userId}", "PUT"); // ?status=agreed&borrowerId=xyz&sharephone=? - Which will lock the book for the exchange
+client.registerMethod("updateStatusToSuccess", baseUrl + "/books/${bookId}/user/${userId}", "PUT"); // ?status=success&borrowerId=xyz
 
 exports.addAddress = function(address, userId, cb) {
     var args = getArguments();
@@ -66,6 +67,34 @@ exports.addAddress = function(address, userId, cb) {
     args.data = address;
     args.path = {userId: userId};
     client.methods.addAddress(args, function(data, response){
+        if(response.statusCode != 200){
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    });
+};
+
+exports.updateStatusToAgreed = function(borrowerId, ownerId, bookId, sharephone, comment, cb){
+    var args = getArguments();
+    args.data = {ownerUserId: ownerId, borrowerUserId: borrowerId, additionalMessage: comment}
+    args.path = {bookId: bookId};
+    args.parameters = {status: 'agreed', borrowerId: borrowerId, sharePh: sharephone}
+    client.methods.updateStatusToAgreed(args, function(data, response){
+        if(response.statusCode != 200){
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    });
+    
+}
+
+exports.initiateBorrowBookReq = function(borrowerId, ownerId, bookId, cb) {
+    var args = getArguments();
+    args.data = {ownerUserId: ownerId, borrowerUserId: borrowerId}
+    args.path = {bookId: bookId}
+    client.methods.borrowBook(args, function(data, response){
         if(response.statusCode != 200){
             cb(data, null);
         } else {
@@ -283,7 +312,7 @@ exports.getWishListBooks = function(userId, cb) {
     var args = getArguments();
     args.path = {userId: userId};
     args.parameters = {"filter": "wishList"};
-    client.methods.getOwnedBooks(args, function(data, response){
+    client.methods.getWishListBooks(args, function(data, response){
         if(response.statusCode != 200){
             cb(data, null);
         } else {

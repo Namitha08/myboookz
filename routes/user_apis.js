@@ -37,3 +37,28 @@ exports.deleteAddress = function (req, res) {
         }
     })
 };
+
+exports.getOwnedBooks = function(req, res) {
+    var userId = req.session.passport.user;
+    neo4jclient.getOwnedBooks(userId, function(error, data){
+        if(error) {
+            res.errorCode = 500;
+            res.json(error)
+        } else {
+            res.json(data)
+        }
+    }) 
+}
+
+
+exports.getWishListBooks = function(req, res) {
+    var userId = req.session.passport.user;
+    neo4jclient.getWishListBooks(userId, function(error, data){
+        if(error) {
+            res.errorCode = 500;
+            res.json(error)
+        } else {
+            res.render('user/my_wishlist_books', {books: data})
+        }
+    }) 
+}

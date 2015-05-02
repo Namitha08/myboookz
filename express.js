@@ -187,8 +187,14 @@ app.get('/auth/fb/callback',
         res.redirect('/account');
 });
 
-app.get('/test',function (req, res) {
-        res.render('my_books_with_tabs');
+app.get('/test', ensureAuthenticated ,function (req, res) {
+    var cachedUser = myCache.get(req.session.passport.user);
+    neo4jclient.getReadBooks(req.session.passport.user, function(err, books){
+        if(err)
+            console.log(err);
+        else
+            res.render('my_books_with_tabs', {user: cachedUser, books: books.books});
+    })
 });
 
 app.get('/auth/google/callback',
@@ -227,6 +233,14 @@ app.get('/profile', ensureAuthenticated, function(req, res){
 app.post("/api/address", ensureAuthenticated, user_api.addAddress);
 app.put("/api/address/:id", ensureAuthenticated, user_api.updateAddress);
 app.delete("/api/address/:id", ensureAuthenticated, user_api.deleteAddress);
+app.get("/api/ownedBooks", ensureAuthenticated, user_api.getOwnedBooks);
+app.get("/api/wishlist", ensureAuthenticated, user_api.getWishListBooks);
+app.post("/api/books/:id/owner/:ownerId/initBorrow", ensureAuthenticated, book_api.initiateBorrowBookReq);
+
+app.post("/process/borrowInit/accept", book_api.acceptBorrowed);
+
+app.get("/process/books/:bookId/owner/:ownerId/borrower/:borrowerId/borrowBookInit", book_api.processBorrowBookInit);
+
 app.get("/readbooks", ensureAuthenticated, function(req, res) {
     var cachedUser = myCache.get(req.session.passport.user);
     neo4jclient.getReadBooks(req.session.passport.user, function(err, books){

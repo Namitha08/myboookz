@@ -26,4 +26,26 @@ $(document).ready(function() {
             //add the stuff back to
         })
     });
+
+    $("#my-books-tab-wishlist").on("click", function(event) {
+        event.preventDefault();
+        var posting = $.get('api/wishlist');
+        posting.done(function(data){
+            console.log(data)
+            $('#my-books-tab-wishlist-content-div').replaceWith(data)
+        })
+    });
+
+    $("#my-books-tab-owned").on("click", function(event) {
+        event.preventDefault();
+        var posting = $.get('api/ownedBooks');
+        posting.done(function(data){
+            $("#")
+        })
+    });
+    
+    $(".fbLikePopUp").on("click", function(event){
+        event.preventDefault();
+        alert("recommend him fb page")
+    })
 });
