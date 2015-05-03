@@ -26,7 +26,7 @@ exports.initiateBorrowBookReq = function (req, res) {
             res.errorCode = 500;
             res.json(error)
         } else {
-           res.ok()
+           res.send("Ok")
         }
     })
 };
@@ -34,10 +34,11 @@ exports.initiateBorrowBookReq = function (req, res) {
 
 exports.acceptBorrowed = function (req, res) {
     var shareContact = req.body.shareContact;
-    var comment = req.body.comment
-    var borrowerId = req.body.borrowerId
-    var ownerId = req.body.ownerId
-    var bookId = req.body.bookId
+    var comment = req.body.comment;
+    var borrowerId = req.body.borrowerId;
+    var ownerId = req.body.ownerId;
+    var bookId = req.body.bookId;
+    console.log("changing to agreed")
      neo4jclient.updateStatusToAgreed(borrowerId, ownerId, bookId, shareContact, comment, function(error, book){
          if(error){
              //todo: error page
@@ -59,7 +60,7 @@ exports.processBorrowBookInit = function (req, res) {
                 if(error){
                     //todo: error page
                 } else {
-                    res.render("process_borrowbook_init", {book :book, borrower: user, userId: ownerUserId, process: 1})
+                    res.render("process_borrowbook_init", {book :book, borrower: user, ownerUserId: ownerUserId, process: 1, borrowerId :borrowerId, bookId :bookId})
                 }
             })
         }

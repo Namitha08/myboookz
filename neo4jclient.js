@@ -58,8 +58,8 @@ client.registerMethod("getBookRelatedToUser", baseUrl + "/books/${bookId}/users/
 
 client.registerMethod("borrowBook", baseUrl + "/books/${bookId}/borrow", "POST"); // -POST borrow request object
 
-client.registerMethod("updateStatusToAgreed", baseUrl + "/books/${bookId}/user/${userId}", "PUT"); // ?status=agreed&borrowerId=xyz&sharephone=? - Which will lock the book for the exchange
-client.registerMethod("updateStatusToSuccess", baseUrl + "/books/${bookId}/user/${userId}", "PUT"); // ?status=success&borrowerId=xyz
+client.registerMethod("updateStatusToAgreed", baseUrl + "/books/${bookId}/users/${userId}/borrow", "PUT"); // ?status=agreed&borrowerId=xyz&sharephone=? - Which will lock the book for the exchange
+client.registerMethod("updateStatusToSuccess", baseUrl + "/books/${bookId}/users/${userId}/borrow", "PUT"); // ?status=success&borrowerId=xyz
 
 exports.addAddress = function(address, userId, cb) {
     var args = getArguments();
@@ -78,7 +78,7 @@ exports.addAddress = function(address, userId, cb) {
 exports.updateStatusToAgreed = function(borrowerId, ownerId, bookId, sharephone, comment, cb){
     var args = getArguments();
     args.data = {ownerUserId: ownerId, borrowerUserId: borrowerId, additionalMessage: comment}
-    args.path = {bookId: bookId};
+    args.path = {bookId: bookId, userId: ownerId};
     args.parameters = {status: 'agreed', borrowerId: borrowerId, sharePh: sharephone}
     client.methods.updateStatusToAgreed(args, function(data, response){
         if(response.statusCode != 200){

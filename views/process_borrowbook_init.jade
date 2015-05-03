@@ -34,7 +34,7 @@ block content
                         div( class="col-md-12 column")
                             form(class="form-horizontal",role="form", action="/process/borrowInit/accept", method="POST", id="borrowAcceptForm")
                                 input(type="hidden", value="#{borrowerId}", name="borrowerId")
-                                input(type="hidden", value="#{userId}", name="ownerId")
+                                input(type="hidden", value="#{ownerUserId}", name="ownerId")
                                 input(type="hidden", value="#{book.id}", name="bookId")
 
                                 div( class="form-group")
