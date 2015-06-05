@@ -1,39 +1,45 @@
 div(class="row clearfix")
     div(class="col-md-12 column")
-        nav(class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation")
-            div(class="navbar-header")
-                a(class="navbar-brand", href="/")
-                    |Book2Borrow.com
+        nav(class="navbar navbar-default navbar-fixed-top", role="navigation")
+            div(class="container")
+                div(class="navbar-header dashboard")
+                    div(class="align-right")
+                        a(class="navbar-brand", href="/")
+                            |BookForBorrow.com
 
-            div(class="collapse navbar-collapse", id="bs-example-navbar-collapse-1")
-                form(class="navbar-form navbar-left", role="search")
-                    div(class="form-group")
-                        input(type="text", class="form-control")
-                    button(type="submit", class="btn btn-default")
-                        |Submit
+                div(class="collapse navbar-collapse", id="bs-example-navbar-collapse-1")
+                    form(class="navbar-form navbar-left", role="search", method="GET", action="/search")
+                        div(class="form-group")
+                            input(type="text", class="form-control", id="search-text", name="q")
+                        button(type="button", class="btn btn-default", id="search-button")
+                            |Search
 
-                ul(class="nav navbar-nav navbar-right")
-                    li
-                        a( href="#")
-                            |Link
-                    li(class="dropdown")
-                        a(href="#", class="dropdown-toggle", data-toggle="dropdown")
-                            |Dropdown
-                            strong(class="caret")
-
-                        ul(class="dropdown-menu")
-                            li
-                                a(href="#")
-                                    |Action
-                            li
-                                a(href="#")
-                                    |Another action
-
-                            li
-                                a(href="#")
-                                    |Something else here
-
-                            li(class="divider")
-                            li
-                                a(href="#")
-                                    |Separated link
+                    ul(class="nav navbar-nav navbar-right")
+                        li 
+                            a( href="/pendingFriends")
+                                img(class="nav-icon", src="/images/friends.svg", style="width:25px; height:25px")
+                        li 
+                            a(id="notification-dropdown",href="#", data-toggle="dropdown", role="button", aria-haspopup="true", aria-expanded="false")
+                                img(class="nav-icon", src="/images/notification.png", style="width:25px; height:25px")
+                            div(class="dropdown-menu", style="width:350px")
+                                div(class="js-first-tabstop", tabindex="0")
+                                div(class="dropdown-caret")
+                                    span(class="caret-outer")
+                                    span(class="caret-inner")    
+                                ul(tabindex="-1", role="menu", aria-labelledby="notification-dropdown")  
+                                    li(class="notification-header center")
+                                        h4 Notifications
+                                    li(class="notification-body", id="notification-body-div")
+                                        ul(class="items center")
+                                            li
+                                                img(src="/images/loading.gif", style="width:30px; height:30px")  
+                                    li(class="notification-footer center")
+                                        a(href="#") 
+                                            h5 Show all   
+                                div(class="js-last-tabstop", tabindex="0")        
+                        li
+                            a( href="/")
+                                |Home
+                        li
+                            a( href="/logout")
+                                |Logout

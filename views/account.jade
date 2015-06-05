@@ -5,8 +5,21 @@ block content
         div(class="row clearfix")
             div(class="dashboard dashboard-left")
                 include includes/dashboard
+                include ./includes/dashboard_groups_list
             div(class="content-main")
-                button(type="button", class="btn btn-primary", data-toggle="modal", data-target=".bs-goodreads-modal-lg")
-                    |Import from good reads
                 include ./includes/goodreads_import
+                include ./includes/add_group_modal
+                - if(checkGoodreads && ((user.goodreadsAuthStatus === "NONE") || (user.goodreadsAuthStatus === "YES"))) {
+                    script
+                        $('#goodreadsimportmodal').modal('show');
+                -}
+                - if(feed && feed.size > 0) {
+                    div(class="feed")
+                    include ./includes/feed_timeline
+                -} else {
+                    h3 Make new friends and see what they are reading
+                    include ./user/random_users_display
+                     - }
             div(class="dashboard dashboard-right")
+                button(type="button", class="btn btn-primary", data-toggle="modal", data-target=".bs-goodreads-modal-lg")
+                    | Import from good reads

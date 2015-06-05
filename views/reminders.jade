@@ -1,0 +1,35 @@
+extends layout
+block content
+    div(id="page-container", class="AppContent main-wrapper container")
+        include ./includes/navbar.jade
+        div(class="row clearfix")
+            div(class="dashboard dashboard-left")
+                include includes/dashboard
+            div(class="content-main")
+                include ./includes/goodreads_import
+                - console.log(checkGoodreads + "authStatus =" + user.goodreadsAuthStatus);
+                - if(checkGoodreads && ((user.goodreadsAuthStatus === "NONE") || (user.goodreadsAuthStatus === "YES"))) {
+                    script
+                        $('#goodreadsimportmodal').modal('show');
+                -}
+                div(class="reminders")
+                    div(class="panel-group",id="reminders-accordion",role="tablist",aria-multiselectable="true")
+                        - var n = remindersPage.size
+                        - for( var i=0 ; i<n; i++){
+                            - var reminder = remindersPage.reminders[i]
+                            div(class="panel panel-default")
+                                div(class="panel-heading",role="tab",id="reminder-heading-#{reminder.nodeId}")
+                                    div(class="row clearfix")
+                                        div(class="col-md-10 column")
+                                            h4(class="panel-title")
+                                                a(class="collapsed",data-toggle="collapse",data-parent="#reminders-accordion",href="#reminder-collapse-#{reminder.nodeId}",aria-expanded="true",aria-controls="collapseOne")
+                                                    |#{reminder.reminderMessage}
+                                        div(class="col-md-2 column")
+                                            button(class="btn btn-danger") Delete
+                                div(id="reminder-collapse-#{reminder.nodeId}",class="panel-collapse collapse",role="tabpanel",aria-labelledby="reminder-heading-#{reminder.nodeId}")
+                                    div(class="panel-body")
+                                        |#{reminder.reminderMessage}
+                        - }
+            div(class="dashboard dashboard-right")
+                button(type="button", class="btn btn-primary", data-toggle="modal", data-target=".bs-goodreads-modal-lg")
+                    |Import from good reads

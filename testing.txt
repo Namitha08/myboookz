@@ -1,0 +1,121 @@
+
+client.registerMethod("createUser",  baseUrl + "/users", "POST"); //?accessToken=xyz    //done
+
+    Expectations:
+    a. Validations:
+        - Name and email should be present - throw invalid data exception
+    b. No duplicate users should be present
+        - It should return existing userId
+        - User should updated with authProvider id (if g+ already exists and logged in via fb .. FbId should get saved)
+        - UUID should be generated
+    c. If friends of the user already signed up for b4b it should automatically add those users as his friends
+    d. User should have default image irrespective of the auth provider
+    e. 
+
+client.registerMethod("updateUser", baseUrl + "/users/${id}", "PUT");
+client.registerMethod("updateFields", baseUrl + "/users/${id}/fields", "PUT");          //done
+    a. Validations:
+            - UserId should be in the form of UUID - throw invalid id exception
+            - UserWith id should exist
+            - Transaction based(get and update)
+            - Error while getting user(throw internal sever error)
+            - userId and user.userId should be same
+
+        b. User not presnt thorw not found exception
+        c. Validations name and email, id image url
+        d. return updated user
+
+
+
+client.registerMethod("getUserFromGoogleId", baseUrl + "/users/${googleId}/googleId", "GET");//done
+client.registerMethod("getUserFromFbId", baseUrl + "/users/fbId/${id}", "GET");         //done
+client.registerMethod("getUserFromId", baseUrl + "/users/${id}", "GET");                //done
+    a. Validations:
+            - UserId should be in the form of UUID - throw invalid id exception
+        b. If user is not present - throw User not found exception (404)
+        c. Expectations:
+            - Should contain name, email, id and imageURL, createdDate and lastmodified dates should present
+        # Imporovements:
+        - Comeup with extended user includes full profile details like groups, count of friends
+
+
+
+client.registerMethod("addAddress", baseUrl + "/users/${userId}/addresses", "POST");    //done
+    a. Validations:
+        User should exists with user(get user validations)
+    b. Required address fields
+        lat lang, address1: zipcode: area:
+
+
+client.registerMethod("updateAddress", baseUrl + "/users/${userId}/addresses/${addressId}", "PUT"); //done
+     a. Validations:
+        User should exists with user(get user validations)
+        address should exist(get and update only fields which are not null)
+    b. Required address fields
+        lat: long:, address1: zipcode: area:
+
+client.registerMethod("deleteAddress", baseUrl + "/users/${userId}/addresses/${addressId}", "DELETE");//done
+    a. Validations:
+        User should exists with user(get user validations)
+        address should exist(get and update only fields which are not null)
+        
+
+client.registerMethod("createReminder", baseUrl + "/users/${userId}/reminders", "POST");                    //done
+client.registerMethod("getReminder", baseUrl + "/users/${userId}/reminders/${reminderId}", "GET");          //done
+client.registerMethod("listReminders", baseUrl + "/users/${userId}/reminders", "GET");                      //done
+client.registerMethod("updateReminder", baseUrl + "/users/${userId}/reminders/${reminderId}", "PUT");       //done
+client.registerMethod("deleteReminder", baseUrl + "/users/${userId}/reminders/${reminderId}", "DELETE");    //done
+
+client.registerMethod("addBookToUserAsOwn", baseUrl + "/users/${userId}/books/${bookId}/own", "POST"); //mark as book as owned
+client.registerMethod("addBookToUserAsRead", baseUrl + "/users/${userId}/books/${bookId}/read", "POST"); //mark as book as owned
+client.registerMethod("addBookToUserAsReadAndOwn", baseUrl + "/users/${userId}/books/${bookId}/read", "POST"); //mark as book as owned
+client.registerMethod("addBookToWishListForUser", baseUrl + "/users/${userId}/books/${bookId}/wish", "POST");       //{userId}/books/{bookId}/wish
+client.registerMethod("changeBookStatusOfOwnedBook", baseUrl + "/users/${userId}/books/${bookId}/OWN", "PUT");
+client.registerMethod("getOwnedBooks", baseUrl + "/users/${userId}/books", "GET"); // ?filter=owned         //done
+client.registerMethod("getAvailableBooks", baseUrl + "/users/${userId}/books", "GET"); // ?filter=available
+client.registerMethod("getLentBooks", baseUrl + "/users/${userId}/books", "GET"); // ?filter=lent
+client.registerMethod("getBorrowedBooks", baseUrl + "/users/${userId}/books", "GET"); // ?filter=borrowed
+client.registerMethod("getReadBooks", baseUrl + "/users/${userId}/books", "GET"); // ?filter=read
+client.registerMethod("getWishListBooks", baseUrl + "/users/${userId}/books", "GET"); // ?filter=wishList
+
+client.registerMethod("getFollowersOfUser", baseUrl + "/users/${userId}/followers", "GET");
+client.registerMethod("getFollowing", baseUrl + "/users/${userId}/following", "GET");
+client.registerMethod("getFriends", baseUrl + "/users/${userId}/friends", "GET");
+
+client.registerMethod("followUser", baseUrl + "/users/${userId}/follow/${followUserId}", "POST");
+client.registerMethod("addFriend", baseUrl + "/users/${currentUserId}/friend/${friendUserId}", "POST");
+client.registerMethod("unFollowUser", baseUrl + "/users/${userId}/follow/${followUserId}", "DELETE");
+
+
+client.registerMethod("saveFavourites", baseUrl + "/users/${userId}/favourites", "PUT");
+//timeline and activity log
+client.registerMethod("getUserTimeLineFeed", baseUrl + "/users/${userId}/timeline/feed", "GET");
+client.registerMethod("getUserActityFeed", baseUrl + "/users/${userId}/timeline/events", "GET");
+//Book
+//client.registerMethod("createBook", baseUrl + "/books", "POST");  --> Don't use this api
+client.registerMethod("getBookById", baseUrl + "/books/${bookId}", "GET");
+client.registerMethod("getBookByGoodreadsId", baseUrl + "/books/goodreadsId/${goodreadsId}", "GET");
+client.registerMethod("getBookByIsbn", baseUrl + "/books/isbn/${isbn}", "GET");
+client.registerMethod("getBookRelatedToUser", baseUrl + "/books/${bookId}/users/${userId}", "GET");
+client.registerMethod("getBookByGrIdRelatedToUser", baseUrl + "/books/goodreadsId/${bookId}/users/${userId}", "GET");
+client.registerMethod("borrowBook", baseUrl + "/books/${bookId}/borrow", "POST"); // -POST borrow request object
+client.registerMethod("updateStatusToAgreed", baseUrl + "/books/${bookId}/users/${userId}/borrow", "PUT"); // ?status=agreed&borrowerId=xyz&sharephone=? - Which will lock the book for the exchange
+client.registerMethod("updateStatusToSuccess", baseUrl + "/books/${bookId}/users/${userId}/borrow", "PUT"); // ?status=success&borrowerId=xyz
+//Groups
+client.registerMethod("addGroup", baseUrl + "/groups", "POST");
+client.registerMethod("getGroup", baseUrl + "/groups/${groupId}", "GET")
+client.registerMethod("getGroupWithMembers", baseUrl + "/groups/${groupId}", "GET"); //?includeMembers=true
+client.registerMethod("addMemberToGroup", baseUrl + "/groups/${groupId}/users/${userId}", "POST"); //?createdBy=xyz
+client.registerMethod("getGroupsOfUser", baseUrl + "/users/${userId}/groups", "GET");
+client.registerMethod("getGroupMembers", baseUrl + "/groups/${groupId}/users", "GET");
+client.registerMethod("getGroupAvailableBooks", baseUrl + "/groups/${groupId}/books", "GET"); //?filter=available
+client.registerMethod("getGroupWishListBooks", baseUrl + "/groups/${groupId}/books", "GET"); //?filter=lookingfor
+//search
+client.registerMethod("searchBooks", baseUrl + "/books/search", "GET") //?q=xyz
+client.registerMethod("searchUsers", baseUrl + "/users/${userId}/search", "GET") //?q=xyz
+client.registerMethod("searchFriends", baseUrl + "/users/${userId}/search/friends", "GET") //?q=xyz
+//funky
+client.registerMethod("getRandomUsers", baseUrl + "/users/random", "GET") //?size=10
+
+
+

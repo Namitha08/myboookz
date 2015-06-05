@@ -17,10 +17,11 @@
       "body-parser" : "~1.4.2",
       "method-override" : "~2.0.2",
       "passport-goodreads" : "*",
-	"goodreads" : "*",
+	  "goodreads" : "*",
       "xml2js": "*",
       "oauth" : "*",
-	"node-cache" : "*",
-      "moment" :"2.10.2"
+	  "node-cache" : "*",
+      "moment" :"2.10.2",
+      "async" : "1.0.0"
   }
 }

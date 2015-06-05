@@ -2,11 +2,10 @@ extends layout
 block content
     div(id="page-container", class="AppContent main-wrapper container")
         include ./includes/navbar.jade
+        include ./includes/search_text_bar
         div(class="row clearfix")
-            div(class="dashboard dashboard-left")
+            div(class="col-md-3 column")
                 include includes/dashboard
-            div(class="content-main")
-                button(type="button", class="btn btn-primary", data-toggle="modal", data-target=".bs-goodreads-modal-lg")
-                    |Import from good reads                  `  1
-                include ./includes/goodreads_import
-            div(class="dashboard dashboard-right")
+            div(class="col-md-9 column")
+                div(id="search-result")
+                    include ./book/search_result_book

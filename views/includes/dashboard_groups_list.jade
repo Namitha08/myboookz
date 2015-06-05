@@ -1,0 +1,20 @@
+div(class="groups module")
+    div(class="groups-inner")
+        div(class="flex-module trends-container")
+            div(class="flex-module-header")
+                h3
+                    span(class="groups-location")
+                        |Groups
+                button(class="btn-primary groups-add-btn pull-right", id="group-new-btn", data-toggle="modal", data-target="#add-group-modal")
+                    |(+)Add
+            div(class="flex-module-inner")
+                div(class="group-items")
+                    - console.log("Groups" + JSON.stringify(groups))
+                    - var n = groups.size
+                    - if(n > 0) {
+                    ul(class="group-items", id="group-items-dashboard")
+                    - for(var i = 0; i < n ; i++) {
+                        - var groupItem = groups.group[i];
+                        include ./group_item
+                    - }
+                    - }

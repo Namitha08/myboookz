@@ -10,9 +10,9 @@ div(class="modal fade bs-goodreads-modal-lg", id="goodreadsimportmodal", tabinde
                 div(class="modal-body")
                     |Do you want to import from good reads?
                 div(class="modal-footer")
-                    button(class="btn", data-dismiss="modal", aria-hidden="true")
-                        |Cancel
-                    button(class="btn btn-primary", id="grim-modalbtnrmdLater")
+                    button(class="btn btn-danger", data-dismiss="modal", aria-hidden="true", id="grim-modalbtn-cancel")
+                        |I don't want
+                    button(class="btn btn-warning", id="grim-modalbtnrmd-later")
                         |Remind me later
                     button(class="btn btn-primary", id="grimportmodalbtnYes")
                         |Import

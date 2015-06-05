@@ -1,0 +1,42 @@
+div(class="ProfileCanopy ProfileCanopy--withNav ProfileCanopy--large")
+    div(class="ProfileCanopy-header u-bgUserColor")
+        div(class="ProfileCanopy-headerBg")
+        div(class="AppContainer")
+            div(class="ProfileCanopy-avatar")
+                div(class="ProfileAvatar")
+                    img(class="ProfileAvatar-image", src="https://cdn4.iconfinder.com/data/icons/free-3d-social-icons/png/512x512/MySpace.png")
+    div(class="ProfileCanopy-navBar")
+        div(class="AppContainer")
+            div(class="row")
+                div(class="col-md-2 column")
+                div(class="col-md-10 column")
+                    div(class="ProfileCanopy-nav")
+                        div(class="ProfileNav", role="navigation")
+                            ul(class="nav nav-tabs")
+                                li(class="ProfileNav-item ProfileNav-item--tweets is-active")
+                                    a(class="ProfileNav-stat ProfileNav-stat--link u-borderUserColor u-textCenter js-tooltip js-nav", href="/groups/#{group.id}?action=available")
+                                        span(class="ProfileNav-label") Available
+                                li(class="ProfileNav-item ProfileNav-item--tweets")
+                                    a(class="ProfileNav-stat ProfileNav-stat--link u-borderUserColor u-textCenter js-tooltip js-nav", href="/groups/#{group.id}?action=wishlist")
+                                        span(class="ProfileNav-label") Looking for
+                                li(class="ProfileNav-item ProfileNav-item--tweets")
+                                    a(class="ProfileNav-stat ProfileNav-stat--link u-borderUserColor u-textCenter js-tooltip js-nav", href="/groups/#{group.id}?action=members")
+                                        span(class="ProfileNav-label") Members
+div(class="page-container clearfix margin80px")
+    div(class="dashboard dashboard-left")
+        div(class="Grid Grid--withGutter")
+            div(class="Grid-cell")
+                div(class="ProfileSidebar ProfileSidebar--withLeftAlignment")
+                    div(class="ProfileHeaderCard")
+                        h1(class="ProfileHeaderCard-name")
+                            a(class="ProfileHeaderCard-nameLink u-textInheritColor js-nav") #{group.name}
+    div(class="content-main-full")
+        - if(action === "available") {
+        include ./show_available_books
+        - } else if(action === "wishlist") {
+        include ./show_look_for_books
+        - } else if(action === "members") {
+        include ./add_members
+        include ./show_members
+
+        - }

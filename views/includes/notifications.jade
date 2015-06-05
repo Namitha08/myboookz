@@ -1,0 +1,11 @@
+ul(class="notification-items")
+    - if(notifications.notifications.length > 0) {
+        - for(var i =0; i < notifications.notifications.length; i++) {
+            li(class="divider")
+            - var notification_item = notifications.notifications[i];
+            include ./notification_unit
+        - }
+    - } else {
+        li
+            h3 No items found!!
+    - }

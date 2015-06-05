@@ -1,0 +1,14 @@
+div(id="my-books", class="box-border")
+    div(class="row books-list")
+        div(class="row clearfix")
+            - var n = books.length
+            - var i = 0
+            - while(i < n){
+            - var book = books[i]
+            - if(i > 0 && i%3 == 0) {
+            div(class="row clearfix")
+            - }
+                div(class="col-md-4 column")
+                    include book_unit_display
+            - i++
+            - }

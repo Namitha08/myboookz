@@ -1,0 +1,25 @@
+li
+    div(class="feed-item")
+        div(class="row clearfix")
+            div(class="column col-md-12")
+                - var targetString = null
+                - if(feedItem.target) {
+                    - targetString = feedItem.target.displayString
+                - } else {
+                    - targetString = ""
+                - }
+                div(class="feed-item")
+                    div(class="event")
+                        div(class="content")
+                            div(class="feed-item-header")
+                                a(href="#{feedItem.subject.url}")
+                                    img(src="#{feedItem.subject.imageUrl}", class="avatar js-action-profile-avatar")
+                                    strong(class="fullname")
+                                        |#{feedItem.subject.displayString}  
+                                small(class="time")
+                                |&nbsp;#{feedItem.eventString}
+                                -if(feedItem.target){
+                                a(href="#{feedItem.target.url}")
+                                    strong(class="fullname") 
+                                        |&nbsp;#{feedItem.target.displayString}
+                                -}

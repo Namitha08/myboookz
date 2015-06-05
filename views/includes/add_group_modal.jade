@@ -1,0 +1,19 @@
+div(class="modal fade bs-add-group-modal-lg", id="add-group-modal", tabindex="-1", role="dialog", aria-labelledby="myLargeModalLabel", aria-hidden="true")
+    div(class="modal-dialog modal-lg")
+        div(class="modal-content")
+            div(class="modal-header")
+                button(type="button", class="close", data-dismiss="modal", aria-label="Close")
+                    span(aria-hidden="true")
+                        |×
+                h4(class="modal-title" id="myLargeModalLabel")
+                    |Add new group
+                div(class="modal-body")
+                    div(class="add-group-form")
+                        div(class="form-group")
+                            label Group Name
+                            input(class="form-control", type="text", id="add-group-name")
+                div(class="modal-footer")
+                    button(class="btn btn-warning", id="add-group-cancel")
+                        |Cancel
+                    button(class="btn btn-primary", id="add-group-save")
+                        |Save

@@ -25,28 +25,22 @@ div(id="my-books", class="box-border")
                         - n = n-1
                         - if(n >= 0) {
                             - var book = books[n]
-                            div(class="col-md-6 column") 
-                                div(class="engagement-card")
-                                    div(class="engagement-body-left")
-                                        a(href="/books/#{book.id}")
-                                            img(src="#{book.imageUrl}", class="book-image")
-                                    div(class="engagement-body-right")
-                                        a(href="/books/#{book.id}", class="book-name") #{book.name}
-                                        br
-                                        p by
-                                            b(class="book-author-name") #{book.authorName}
-                                    div(class="engagement-action-container")
-                                        div(class="row")
-                                            div(class="col-md-7 column")
-                                                p Other details
-                                            div(class="col-md-5 column")
-                                                select(class="form-control book-status")
-                                                    option
-                                                        |Available
-                                                    option
-                                                        |Lent
-                                                    option
-                                                        |Locked
+                            div(class="list-unit")
+                                div(class="row clearfix")
+                                    div(class="col-md-3 lu-image-wrapper")
+                                        div(class="lu-image")
+                                            a(href="#")
+                                                img(src="#{book.imageUrl}")
+                                    div(class="col-md-9")
+                                        div(class="row clearfix")
+                                            div(class="col-md-12")
+                                                div(class="book-name")
+                                                    a(href="#")
+                                                        h3 #{book.name}
+                                        div(class="row clearfix")
+                                            div(class="col-md-6")
+                                                div
+                                                    |Author - #{book.authorName}
                         - }
                     - }
             - }

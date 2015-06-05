@@ -5,7 +5,7 @@ block content
         div(class="row clearfix")
             div(class="dashboard dashboard-left")
                 include includes/dashboard
-            div(class="content-main")
+            div(class="content-main-full")
                 section
                     div(class="tabs tabs-style-topline")
                         nav
@@ -29,7 +29,7 @@ block content
                         div(class="content-wrap")
                             section(id="my-books-tab-read-content", class="")
                                 div(id="my-books-tab-read-content-div")
-                                    include ./user/my_books
+                                     include ./book/read_book_details
                             section(id="my-books-tab-owned-content", class="")
                                 div(id="my-books-tab-owned-content-div")
                                     img(src="/images/loading-x.gif")

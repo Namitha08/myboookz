@@ -2,10 +2,69 @@ var exports = module.exports = {};
 var neo4jclient = require("../neo4jclient.js");
 var moment = require('moment');
 
+exports.addBookToUser = function(req, res) {
+    var bookId = req.params.id;
+    var userId = req.session.passport.user;
+    var idType = req.query.idType;
+    var listingType = req.query.listingType;
+    if(listingType === "wishlist") {
+        neo4jclient.addBookToWishListForUser(userId, bookId, idType, function(error, data){
+            if(error) {
+                res.errorCode = 500;
+                res.json(error)
+            } else {
+                res.render("book/book_type_info", {book:{bookType:"WISH"}})
+            }
+        })
+    } else if(listingType === "own") {
+        neo4jclient.addBookToUserAsOwn(userId, bookId, idType, function(error, data){
+            if(error) {
+                res.errorCode = 500;
+                res.json(error)
+            } else {
+                res.render("book/book_type_info", {book:{bookType:"OWN"}})
+            }
+        })
+    }else if(listingType === "read") {
+        neo4jclient.addBookToUserAsRead(userId, bookId, idType, function(error, data){
+            if(error) {
+                res.errorCode = 500;
+                res.json(error)
+            } else {
+                res.render("book/book_type_info", {book:{bookType:"READ"}})
+            }
+        })
+    } else if(listingType === "readAndOwn") {
+        neo4jclient.addBookToUserAsOwn(userId, bookId, idType, function(error, data){
+            if(error) {
+                res.errorCode = 500;
+                res.json(error)
+            } else {
+                res.render("book/book_type_info", {book:{bookType:"OWN"}})
+            }
+        })
+    }
+};
+
 exports.showBook = function (req, res) {
     var bookId = req.params.id;
     var userId = req.session.passport.user;
     neo4jclient.getBookRelatedToUser(bookId, userId, function(error, book){
+        if(error) {
+            res.errorCode = 500;
+            res.json(error)
+        } else {
+            var borrowedDateFromNow = moment(1429551207130).fromNow();
+            var borrowedDate = moment(1429551207130).format("MMM Do YYYY");
+            res.render('show_book', { book: book, borrowedDate: borrowedDate, borrowedDateFromNow: borrowedDateFromNow});
+        }
+    })
+};
+
+exports.showBookByGrId = function (req, res) {
+    var bookId = req.params.id;
+    var userId = req.session.passport.user;
+    neo4jclient.getBookByGrIdRelatedToUser(bookId, userId, function(error, book){
         if(error) {
             res.errorCode = 500;
             res.json(error)
@@ -30,7 +89,6 @@ exports.initiateBorrowBookReq = function (req, res) {
         }
     })
 };
-
 
 exports.acceptBorrowed = function (req, res) {
     var shareContact = req.body.shareContact;

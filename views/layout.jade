@@ -4,4 +4,7 @@ html
     body(ng-app="sampleApp", ng-controller="FeedController")
         script(src='/js/google-analytics.js')
         block content
+        include ./includes/pending_friend_req_modal    
+        if(!feed_disable)    
+            include ./includes/feedback
         include ./includes/foot.jade

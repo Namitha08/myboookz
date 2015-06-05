@@ -4,6 +4,10 @@ var Client = require('node-rest-client').Client;
 
 client = new Client();
 
+client.on('error',function(err){
+    
+});
+
 function getArguments() {
     return {
 //    data:{"name":"Jerald Reichert","email":"felipa.considine@gmail.com","lastModifiedDate":0,"addresses":[{"id":null,"addressType":"HOME","addressLine1":"653","addressLine2":"Suite 402","landmark":"landMark","city":"Lake town","state":"NY","country":"Ethiopia","zipCode":"20726-6718","createdDate":0,"lastModifiedTime":0}],"phone":"096.160.4570 x114","createdDate":0}, // data passed to REST method (only useful in POST, PUT or PATCH methods)
@@ -31,8 +35,10 @@ client.registerMethod("listReminders", baseUrl + "/users/${userId}/reminders", "
 client.registerMethod("updateReminder", baseUrl + "/users/${userId}/reminders/${reminderId}", "PUT");       //done
 client.registerMethod("deleteReminder", baseUrl + "/users/${userId}/reminders/${reminderId}", "DELETE");    //done
 
-client.registerMethod("addBookToUser", baseUrl + "/users/${userId}/books/${bookId}/own", "POST");
-client.registerMethod("addBookToWishListForUser", baseUrl + "/users/${userId}/books/${bookId}/wish", "PUT");
+client.registerMethod("addBookToUserAsOwn", baseUrl + "/users/${userId}/books/${bookId}/own", "POST"); //mark as book as owned
+client.registerMethod("addBookToUserAsRead", baseUrl + "/users/${userId}/books/${bookId}/read", "POST"); //mark as book as owned
+client.registerMethod("addBookToUserAsReadAndOwn", baseUrl + "/users/${userId}/books/${bookId}/read", "POST"); //mark as book as owned
+client.registerMethod("addBookToWishListForUser", baseUrl + "/users/${userId}/books/${bookId}/wish", "POST");       //{userId}/books/{bookId}/wish
 client.registerMethod("changeBookStatusOfOwnedBook", baseUrl + "/users/${userId}/books/${bookId}/OWN", "PUT");
 client.registerMethod("getOwnedBooks", baseUrl + "/users/${userId}/books", "GET"); // ?filter=owned         //done
 client.registerMethod("getAvailableBooks", baseUrl + "/users/${userId}/books", "GET"); // ?filter=available
@@ -43,27 +49,390 @@ client.registerMethod("getWishListBooks", baseUrl + "/users/${userId}/books", "G
 
 client.registerMethod("getFollowersOfUser", baseUrl + "/users/${userId}/followers", "GET");
 client.registerMethod("getFollowing", baseUrl + "/users/${userId}/following", "GET");
+client.registerMethod("getFriends", baseUrl + "/users/${userId}/friends", "GET");
+client.registerMethod("getPendingFriends", baseUrl + "/users/${userId}/friends/pending", "GET");
 
 client.registerMethod("followUser", baseUrl + "/users/${userId}/follow/${followUserId}", "POST");
+client.registerMethod("addFriend", baseUrl + "/users/${currentUserId}/friend/${friendUserId}", "POST");
 client.registerMethod("unFollowUser", baseUrl + "/users/${userId}/follow/${followUserId}", "DELETE");
+client.registerMethod("confirmFrindReq", baseUrl + "/users/${userId}/friend/${friendUserId}", "PUT"); //?status=agreed
+client.registerMethod("deleteFrindReq", baseUrl + "/users/${userId}/friend/${friendUserId}", "PUT"); //?status=cancel
+
 
 client.registerMethod("saveFavourites", baseUrl + "/users/${userId}/favourites", "PUT");
-
+//timeline and activity log
+client.registerMethod("getUserTimeLineFeed", baseUrl + "/users/${userId}/timeline/feed", "GET");
+client.registerMethod("getUserActityFeed", baseUrl + "/users/${userId}/timeline/events", "GET");
 //Book
 //client.registerMethod("createBook", baseUrl + "/books", "POST");  --> Don't use this api
 client.registerMethod("getBookById", baseUrl + "/books/${bookId}", "GET");
 client.registerMethod("getBookByGoodreadsId", baseUrl + "/books/goodreadsId/${goodreadsId}", "GET");
 client.registerMethod("getBookByIsbn", baseUrl + "/books/isbn/${isbn}", "GET");
 client.registerMethod("getBookRelatedToUser", baseUrl + "/books/${bookId}/users/${userId}", "GET");
-
+client.registerMethod("getBookByGrIdRelatedToUser", baseUrl + "/books/goodreadsId/${bookId}/users/${userId}", "GET");
 client.registerMethod("borrowBook", baseUrl + "/books/${bookId}/borrow", "POST"); // -POST borrow request object
-
 client.registerMethod("updateStatusToAgreed", baseUrl + "/books/${bookId}/users/${userId}/borrow", "PUT"); // ?status=agreed&borrowerId=xyz&sharephone=? - Which will lock the book for the exchange
 client.registerMethod("updateStatusToSuccess", baseUrl + "/books/${bookId}/users/${userId}/borrow", "PUT"); // ?status=success&borrowerId=xyz
+//Groups
+client.registerMethod("addGroup", baseUrl + "/groups", "POST");
+client.registerMethod("getGroup", baseUrl + "/groups/${groupId}", "GET")
+client.registerMethod("getGroupWithMembers", baseUrl + "/groups/${groupId}", "GET"); //?includeMembers=true
+client.registerMethod("addMemberToGroup", baseUrl + "/groups/${groupId}/users/${userId}", "POST"); //?createdBy=xyz
+client.registerMethod("getGroupsOfUser", baseUrl + "/users/${userId}/groups", "GET");
+client.registerMethod("getGroupMembers", baseUrl + "/groups/${groupId}/users", "GET");
+client.registerMethod("getGroupAvailableBooks", baseUrl + "/groups/${groupId}/books", "GET"); //?filter=available
+client.registerMethod("getGroupWishListBooks", baseUrl + "/groups/${groupId}/books", "GET"); //?filter=lookingfor
+//search
+client.registerMethod("searchBooks", baseUrl + "/books/search", "GET") //?q=xyz
+client.registerMethod("searchUsers", baseUrl + "/users/${userId}/search", "GET") //?q=xyz
+client.registerMethod("searchFriends", baseUrl + "/users/${userId}/search/friends", "GET") //?q=xyz
+//funky
+client.registerMethod("getRandomUsers", baseUrl + "/users/random", "GET") //?size=10
+
+//notifications
+client.registerMethod("getFreshNotifications", baseUrl + "/users/${userId}/notifications", "GET") //?filter=fresh
+client.registerMethod("getAllNotifications", baseUrl + "/users/${userId}/notifications", "GET") //?filter=all
+client.registerMethod("removeFreshNotifications", baseUrl + "/users/${userId}/notifications", "DELETE")
+
+
+exports.removeFreshNotifications = function(userId, cb) {
+    var args = getArguments();
+    args.path = {userId: userId};
+    client.methods.removeFreshNotifications(args, function(data, response){
+        if(response.statusCode != 200){
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    })
+}
+
+exports.getAllNotifications = function(userId, cb) {
+    var args = getArguments();
+    args.path = {userId: userId};
+    args.parameters = {filter: "all"};
+    client.methods.getFreshNotifications(args, function(data, response){
+        if(response.statusCode != 200){
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    })
+}
+
+exports.getFreshNotifications = function(userId, cb) {
+    var args = getArguments();
+    args.path = {userId: userId};
+    args.parameters = {filter: "fresh"};
+    client.methods.getFreshNotifications(args, function(data, response){
+        if(response.statusCode != 200){
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    })
+}
+
+exports.getFriends = function(userId, currentUserId, cb) {
+    var args = getArguments();
+    args.path = {userId: userId};
+    args.parameters = {currentUserId: currentUserId};
+    client.methods.getFriends(args, function(data, response){
+        if(response.statusCode != 200){
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    })
+}
+
+exports.getPendingFriends = function(userId, cb) {
+    var args = getArguments();
+    args.path = {userId: userId};
+    client.methods.getPendingFriends(args, function(data, response){
+        if(response.statusCode != 200){
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    })
+}
+
+
+exports.confirmFrindReq = function(currentUserId, friendId, cb) {
+    var args = getArguments();
+    args.path = {userId: currentUserId, friendUserId: friendId};
+    args.parameters = {status:"agreed"}
+    client.methods.confirmFrindReq(args, function(data, response){
+        if(response.statusCode != 200){
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    })
+};
+
+exports.deleteFrindReq = function(currentUserId, friendId, cb) {
+    var args = getArguments();
+    args.path = {userId: currentUserId, friendUserId: friendId};
+    args.parameters = {status:"cancel"}
+    client.methods.deleteFrindReq(args, function(data, response){
+        if(response.statusCode != 200){
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    })
+};
+
+exports.addFriend = function(currentUserId, friendId, cb) {
+    var args = getArguments();
+    args.path = {currentUserId: currentUserId, friendUserId: friendId};
+    client.methods.addFriend(args, function(data, response){
+        if(response.statusCode != 200){
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    })
+};
+
+exports.addBookToUserAsOwn = function(userId, bookId, idType, cb) {
+    var args = getArguments();
+    args.path = {userId: userId, bookId: bookId};
+    args.parameters = {idType:idType}
+    client.methods.addBookToUserAsOwn(args, function(data, response){
+        if(response.statusCode != 200){
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    })
+};
+
+exports.addBookToUserAsRead = function(userId, bookId, idType, cb) {
+    var args = getArguments();
+    args.path = {userId: userId, bookId: bookId};
+    args.parameters = {idType:idType}
+    client.methods.addBookToUserAsRead(args, function(data, response){
+        if(response.statusCode != 200){
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    })
+};
+
+
+
+exports.addBookToWishListForUser = function(userId, bookId, idType, cb) {
+    var args = getArguments();
+    args.path = {userId: userId, bookId: bookId};
+    args.parameters = {idType:idType}
+    client.methods.addBookToWishListForUser(args, function(data, response){
+        if(response.statusCode != 200){
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    })
+};
+
+exports.getGroupAvailableBooks = function(groupId, cb) {
+    var args = getArguments();
+    args.path = {groupId: groupId};
+    args.parameters = {filter:"available"}
+    client.methods.getGroupAvailableBooks(args, function(data, response){
+        if(response.statusCode != 200){
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    })
+};
+
+exports.getGroupWishListBooks = function(groupId, cb) {
+    var args = getArguments();
+    args.path = {groupId: groupId};
+    args.parameters = {filter:"lookingfor"}
+    client.methods.getGroupWishListBooks(args, function(data, response){
+        if(response.statusCode != 200){
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    })
+};
+
+exports.getGroupMembers = function(groupId, cb) {
+    var args = getArguments();
+    args.path = {groupId: groupId};
+    client.methods.getGroupMembers(args, function(data, response){
+        if(response.statusCode != 200){
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    })
+};
+
+exports.getRandomUsers = function(size, userId, cb){
+    var args = getArguments();
+    args.parameters = {size:size, currentUserId:userId};
+    client.methods.getRandomUsers(args, function (data, response) {
+        if (response.statusCode != 200) {
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    })
+};
+
+exports.searchFriends = function(userId, searchString, cb) {
+    var args = getArguments();
+    args.path = {userId: userId};
+    args.parameters = {q: searchString}
+    client.methods.searchFriends(args, function (data, response) {
+        if (response.statusCode != 200) {
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    })
+};
+exports.searchBooks = function(searchString, cb) {
+    var args = getArguments();
+    args.parameters = {q: searchString}
+
+    client.methods.searchBooks(args, function (data, response) {
+        if (response.statusCode != 200) {
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    })
+};
+
+exports.searchUsers = function(userId, searchString, cb) {
+    var args = getArguments();
+    args.path = {userId: userId};
+    args.parameters = {q: searchString}
+    
+    client.methods.searchUsers(args, function (data, response) {
+        if (response.statusCode != 200) {
+            
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    })
+};
+
+
+exports.getGroupsOfUser = function(userId, cb) {
+    var args = getArguments();
+    args.path = {userId: userId};
+
+    client.methods.getGroupsOfUser(args, function (data, response) {
+        if (response.statusCode != 200) {
+            
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    })
+};
+
+exports.addMemberToGroup = function(groupId, userId, currentUserId, cb) {
+    var args = getArguments();
+    args.path = {userId: userId, groupId: groupId};
+    args.parameters = {createdBy: currentUserId, role:"READ"}
+
+    client.methods.addMemberToGroup(args, function (data, response) {
+        if (response.statusCode != 200) {
+            
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    })
+}
+
+exports.addGroup = function(group, userId, cb) {
+    var args = getArguments();
+    args.parameters = {userId:userId};
+    args.data = group;
+    client.methods.addGroup(args, function(data, response){
+        if(response.statusCode != 200){
+            
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    })
+};
+
+exports.getGroupWithMembers = function(groupId, userId, cb) {
+    var args = getArguments();
+    args.parameters = {includeMembers:true};
+    args.path = {groupId: groupId};
+    client.methods.getGroupWithMembers(args, function(data, response){
+        if(response.statusCode != 200){
+            
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    })
+};
+
+exports.getGroup = function(groupId, cb) {
+    var args = getArguments();
+    args.path = {groupId: groupId};
+    client.methods.getGroup(args, function(data, response){
+        if(response.statusCode != 200){
+            
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    })
+};
+
+exports.followUser = function(currentUser, followUserId, cb) {
+    var args = getArguments();
+    
+
+};
+
+exports.getUserTimeLineFeed = function(userId, cb) {
+    var args = getArguments();
+    args.path = {userId:userId};
+    client.methods.getUserTimeLineFeed(args, function(data, response){
+        if(response.statusCode != 200){
+            
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    });
+};
+
+exports.getUserActityFeed = function(userId, cb) {
+    var args = getArguments();
+    args.path = {userId: userId};
+    client.methods.getUserActityFeed(args, function(data, response){
+        if(response.statusCode != 200){
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    });
+};
 
 exports.addAddress = function(address, userId, cb) {
     var args = getArguments();
-    console.log("Neo4jClient -" + JSON.stringify(address)  + "UserId:" + userId);
+    
     args.data = address;
     args.path = {userId: userId};
     client.methods.addAddress(args, function(data, response){
@@ -71,6 +440,18 @@ exports.addAddress = function(address, userId, cb) {
             cb(data, null);
         } else {
             cb(null, data);
+        }
+    });
+};
+
+exports.bookSearch = function(searchString, userId, cb) {
+    var args = getArguments();
+    args.parameters = {q: searchString, userId: userId}
+    client.methods.searchBooks(args, function(books, response){
+        if(response.statusCode != 200){
+            cb(books, null);
+        } else {
+            cb(null, books);
         }
     });
 };
@@ -88,7 +469,7 @@ exports.updateStatusToAgreed = function(borrowerId, ownerId, bookId, sharephone,
         }
     });
     
-}
+};
 
 exports.initiateBorrowBookReq = function(borrowerId, ownerId, bookId, cb) {
     var args = getArguments();
@@ -130,7 +511,7 @@ exports.deleteAddress = function(addressId, userId, cb) {
 
 exports.addReminderForTargetUser = function(targetUserId, reminder, createdBy, reminderType,cb) {
     var args = getArguments();
-    console.log("Neo4jClient -" + JSON.stringify(reminder)  + "UserId:" + userId);
+    
     args.data = reminder;
     args.path = {userId: targetUserId};
     args.parameters = {createdBy:createdBy, reminderType: reminderType}
@@ -221,9 +602,9 @@ exports.updateFields = function(fields, userId, cb) {
     var args = getArguments();
     args.path = {id: userId};
     args.data = fields;
-    console.log("calling to save the fields with args:" + JSON.stringify(args));
+    
     client.methods.updateFields(args, function(data, response){
-        console.log(data);
+        
         if(response.statusCode != 200){
             cb(data, null);
         } else {
@@ -331,4 +712,16 @@ exports.getBookRelatedToUser = function(bookId, userId, cb) {
             cb(null, data);
         }
     })
-};
+}
+
+exports.getBookByGrIdRelatedToUser = function(bookId, userId, cb) {
+    var args = getArguments();
+    args.path = {userId: userId, bookId: bookId}
+    client.methods.getBookByGrIdRelatedToUser(args, function(data, response){
+        if(response.statusCode != 200){
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    })
+}

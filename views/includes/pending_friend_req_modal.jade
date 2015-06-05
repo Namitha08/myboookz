@@ -1,14 +1,12 @@
-div(class="modal fade bs-fbpage-modal-lg", id="goodreadsimportmodal", tabindex="-1", role="dialog", aria-labelledby="myLargeModalLabel", aria-hidden="true")
+div(class="modal fade bs-pending-friends-modal-lg", id="pending-friends-modal", tabindex="-1", role="dialog", aria-labelledby="myLargeModalLabel", aria-hidden="true")
     div(class="modal-dialog modal-lg")
-        div(id="fb-root")
-        script
-            include ./fb_include.js
         div(class="modal-content")
             div(class="modal-header")
                 button(type="button", class="close", data-dismiss="modal", aria-label="Close")
                     span(aria-hidden="true")
                         |×
                 h4(class="modal-title" id="myLargeModalLabel")
-                    |Invite user...
+                    |Add new group
                 div(class="modal-body")
-                    include ./fb_page_show.html
+                    div(id="pending-friends-list")
+                        p Loading ... please wait

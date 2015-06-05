@@ -1,0 +1,20 @@
+div(class="row clearfix")
+    div(class="AppContainer")
+        div(class="col-md-12 column")
+            div(class="AppContainer")
+                div(class="AdaptiveSearchTitle u-bgUserColor")
+                    h1(class="AdaptiveSearchTitle-title")
+                        |#{searchText}
+        div(class="col-md-12 column")
+            div(class="AdaptiveFiltersBar")
+                div(class="AdaptiveFiltersBar-nav")
+                    li(class="AdaptiveFiltersBar-item u-borderUserColor")
+                        a(class="AdaptiveFiltersBar-target AdaptiveFiltersBar-target--link u-textUserColor js-nav", id="search-books-nav", data-string="#{searchText}", href="#books")
+                            span(class="AdaptiveFiltersBar-label") Books
+                    li(class="AdaptiveFiltersBar-item u-borderUserColor")
+                        a(class="AdaptiveFiltersBar-target AdaptiveFiltersBar-target--link u-textUserColor js-nav", id="search-users-nav", data-string="#{searchText}", href="#users")
+                            span(class="AdaptiveFiltersBar-label") Users
+                    li(class="AdaptiveFiltersBar-item u-borderUserColor")
+                        a(class="AdaptiveFiltersBar-target AdaptiveFiltersBar-target--link u-textUserColor js-nav", href="#")
+                            span(class="AdaptiveFiltersBar-label") Groups
+                                
