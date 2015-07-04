@@ -13,18 +13,24 @@ $(document).ready(function() {
     });
 
     $('#pending-frind-req-btn').click(function(event){
+
         var posting = $.get('/api/users/friends/pending');
         posting.done(function(data){
             $('#pending-friends-list').html(data);
         })    
     })
 
-    $('#notifications-clear-all').click(function(event){
-        var posting = $.delete('/api/notifications');
-         posting.done(function(data){
-            $('#notification-body-div').html('');
-        })  
+    $('#notification-clear-all').click(function(event){
+        $.ajax({
+            url: '/api/notifications',
+            type: 'DELETE',
+        success: function(result) {
+       $('#notification-body-div').html(result);
+        }
+});
     })
+
+
 
     $('#notification-dropdown').click(function(event){
         var posting = $.get('/api/notifications');

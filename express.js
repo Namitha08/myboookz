@@ -306,7 +306,7 @@ app.post("/api/users/:friendId/friend/confirm", ensureAuthenticated, user_api.co
 app.delete("/api/users/:friendId/friend", ensureAuthenticated, user_api.deleteFriendReq);
 app.get("/api/users/friends/pending", ensureAuthenticated, user_api.getPendingFriends);
 app.get('/api/notifications', ensureAuthenticated, user_api.getFreshNotifications);
-app.delete('/api/notifications', ensureAuthenticated, user_api.getFreshNotifications);
+app.delete('/api/notifications', ensureAuthenticated, user_api.removeFreshNotifications);
 
 app.get("/search", ensureAuthenticated, function(req, res) {
 	var cachedUser = myCache.get(req.session.passport.user);

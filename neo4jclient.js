@@ -92,12 +92,12 @@ client.registerMethod("getRandomUsers", baseUrl + "/users/random", "GET") //?siz
 //notifications
 client.registerMethod("getFreshNotifications", baseUrl + "/users/${userId}/notifications", "GET") //?filter=fresh
 client.registerMethod("getAllNotifications", baseUrl + "/users/${userId}/notifications", "GET") //?filter=all
-client.registerMethod("removeFreshNotifications", baseUrl + "/users/${userId}/notifications", "DELETE")
+client.registerMethod("removeFreshNotifications", baseUrl + "/users/${userId1}/notifications", "DELETE")
 
 
 exports.removeFreshNotifications = function(userId, cb) {
     var args = getArguments();
-    args.path = {userId: userId};
+    args.path = {userId1: userId};
     client.methods.removeFreshNotifications(args, function(data, response){
         if(response.statusCode != 200){
             cb(data, null);
@@ -111,7 +111,7 @@ exports.getAllNotifications = function(userId, cb) {
     var args = getArguments();
     args.path = {userId: userId};
     args.parameters = {filter: "all"};
-    client.methods.getFreshNotifications(args, function(data, response){
+    client.methods.getAllNotifications(args, function(data, response){
         if(response.statusCode != 200){
             cb(data, null);
         } else {
