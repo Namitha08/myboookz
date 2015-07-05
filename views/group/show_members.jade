@@ -11,11 +11,11 @@ div(class="row clearfix")
                     - var n = users.length
                     - var i = 0
                     - while(i < n){
-                        - var temp_user = users[i]
+                        - var group_member = users[i]
                         - if(i > 0 && i%3 == 0) {
                             div(class="row clearfix")
                         - }
                             div(class="col-md-4 column")
-                                include ../user/user_unit
+                                include ./group_member
                         - i++
                     - }

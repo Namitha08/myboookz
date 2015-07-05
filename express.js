@@ -161,12 +161,15 @@ function handleAccountPage(checkGoodreads, user, req, res) {
             }
         },
         function(err, results) {
-            if(results.feed.size <= 0){
-               neo4jclient.getRandomUsers(10, req.session.passport.user, function(err, users){
+            console.log("Checking feed size" + results.feed)
+            if(results.feed.events.length <= 0){
+                console.log("Feed data not found so getting random users")
+                neo4jclient.getRandomUsers(10, req.session.passport.user, function(err, users){
                     if(!err) {
+                        console.log("Processing random users")
                         res.render('account', {user: user, checkGoodreads: checkGoodreads, users:users.users, groups: results.groups});
                     }
-               })
+                })
             } else {
                 res.render('account', {user: user, checkGoodreads: checkGoodreads, feed:results.feed, groups: results.groups});
             }
@@ -235,11 +238,11 @@ app.get('/auth/fb/callback',
 
 app.get('/mybooks', ensureAuthenticated ,function (req, res) {
 	var cachedUser = myCache.get(req.session.passport.user);
-	neo4jclient.getReadBooks(req.session.passport.user, function(err, books){
+	neo4jclient.getAllBooks(req.session.passport.user, function(err, books){
 		if(err)
 			console.log(err);
 		else
-			res.render('my_books', {user: cachedUser, books: books.books});
+			res.render('my_books', {user: cachedUser, books: books});
 	})
 });
 
@@ -299,7 +302,7 @@ app.post("/api/groups", ensureAuthenticated, group_api.addGroup);
 app.get("/api/search/users", ensureAuthenticated, user_api.searchUsers);
 app.post("/api/books/:id", ensureAuthenticated, book_api.addBookToUser);
 app.post("/api/users/:id/friend", ensureAuthenticated, user_api.friendReq);
-app.post("/api/friends/search/group", ensureAuthenticated, user_api.searchMembersForGroup);
+app.post("/api/friends/search/group", ensureAuthenticated, group_api.searchToAddGroupMembers);
 app.post("/api/group/:groupId/user/:userId", ensureAuthenticated, group_api.addMemberToGroup);
 
 app.post("/api/users/:friendId/friend/confirm", ensureAuthenticated, user_api.confirmFriendReq);
@@ -346,46 +349,6 @@ app.post("/process/borrowInit/accept", book_api.acceptBorrowed);
 
 app.get("/process/books/:bookId/owner/:ownerId/borrower/:borrowerId/borrowBookInit", book_api.processBorrowBookInit);
 
-app.get("/readbooks", ensureAuthenticated, function(req, res) {
-	var cachedUser = myCache.get(req.session.passport.user);
-	neo4jclient.getReadBooks(req.session.passport.user, function(err, books){
-		if(err)
-			console.log(err);
-		else
-			res.render('mybooks', {user: cachedUser, books: books.books});
-	})
-});
-
-app.get("/owned", ensureAuthenticated, function(req, res) {
-	var cachedUser = myCache.get(req.session.passport.user);
-	neo4jclient.getOwnedBooks(req.session.passport.user, function(err, books){
-		if(err)
-			console.log(err);
-		else
-			res.render('mybooks', {user: cachedUser, books: books});
-	})
-});
-
-app.get("/borrowed", ensureAuthenticated, function(req, res) {
-	var cachedUser = myCache.get(req.session.passport.user);
-	neo4jclient.getBorrowedBooks(req.session.passport.user, function(err, books){
-		if(err)
-			console.log(err);
-		else
-			res.render('mybooks', {user: cachedUser, books: books});
-	})
-});
-
-app.get("/wishlist", ensureAuthenticated, function(req, res) {
-	var cachedUser = myCache.get(req.session.passport.user);
-	neo4jclient.getWishListBooks(req.session.passport.user, function(err, books){
-		if(err)
-			console.log(err);
-		else
-			res.render('my_wishlist_books', {user: cachedUser, books: books});
-	})
-});
-
 app.post("/feedback", ensureAuthenticated, function (req, res) {
 	var cachedUser = myCache.get(req.session.passport.user);
 	var feedback = req.body.feedback;
@@ -418,7 +381,7 @@ app.get('/logout', function(req, res){
 
 function ensureAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) { return next(); }
-	res.render('index', { title: "Start Bootstrap", feed_disable:true});
+	res.render('index', { title: "Book4Borrow", feed_disable:true});
 }
 
 app.listen(3000);

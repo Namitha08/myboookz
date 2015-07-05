@@ -12,11 +12,31 @@
 .book-image{
     width: 75px;
     height: 100px;
-    
 }
 
 .center {
    text-align:center;
+}
+
+.home-page-sec-main{
+    background: #2ba3d4;
+}
+
+.home-logo{
+      margin: 10px 0 20px 0;
+}
+
+.home-page-sec-features {
+    background: #3dc0f1;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 0;
+  vertical-align: middle;
 }
 
 .sidebar {
@@ -29,8 +49,19 @@
     border-right: 1px solid #eee;
 }
 
+.home-content{   
+    padding: 120px 0;    
+}
+body {
+  margin: 0;
+}
+
 .nav-sidebar {
     width: 100%;
+}
+
+.feed-items {
+    
 }
 
 .mainImage {
@@ -61,6 +92,10 @@
     margin: auto;
 }
 
+.features-logo{
+    height: 256px;
+    width: 256px;   
+}
 
 .engagement-action-container {
     clear: both;

@@ -1,7 +1,7 @@
 div(class="feed-items")
     - const count = feed.size
     - for(var i =0; i < count; i++) {
-    - var feedItem = feed.userEvent[i];
-    - console.log("redering feedItem --- > " + JSON.stringify(feedItem))
-    include ./feed_item
-    - }
+        - var feedItem = feed.events[i];
+        - console.log("redering feedItem --- > " + JSON.stringify(feedItem))
+        include ./feed_item
+    - } 

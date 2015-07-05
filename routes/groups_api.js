@@ -14,7 +14,7 @@ exports.addGroup = function (req, res) {
     })
 };
 
-exports.addMemberToGroup = exports.showGroup = function(req, res) {
+exports.addMemberToGroup  = function(req, res) {
     var groupId = req.params.groupId;
     var memberId = req.params.userId;
     var createdBy = req.session.passport.user;
@@ -26,6 +26,21 @@ exports.addMemberToGroup = exports.showGroup = function(req, res) {
         }
     })
 }
+
+exports.searchToAddGroupMembers = function(req, res) {
+    var userId = req.session.passport.user;
+    var searchString = req.query.q;
+    var groupId = req.query.groupId;
+    neo4jclient.searchToAddGroupMembers(groupId, searchString, userId, function(error, users){
+        if(error) {
+            res.errorCode = 500;
+            res.json(error)
+        } else {
+            res.render("group/show_members", {users:users.groupMembers, group_member_unit_action:'add_member', groupId: groupId})
+        }
+    })
+};
+
 
 exports.showGroup = function(req, res) {
     var groupId = req.params.groupId;
@@ -43,8 +58,8 @@ exports.showGroup = function(req, res) {
                     res.render('show_group', {group: group, books:books.books, action:"wishlist"});
                 })
             } else {
-                neo4jclient.getGroupMembers(groupId, function(error, memebers){
-                    res.render('show_group', {group: group, users:memebers.users, action:"members"});
+                neo4jclient.getGroupMembers(groupId, req.session.passport.user, function(error, memebers){
+                    res.render('show_group', {group: group, users:memebers.groupMembers, group_member_unit_action:"show_member", action:"members"});
                 })
             }
         }

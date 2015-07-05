@@ -1,0 +1,30 @@
+div(class="Grid-cell u-mb10")
+    div(class="js-stream-item")
+        div(class="ProfileCard js-actionable-user")
+            a(class="ProfileCard-bg js-nav", href="#")
+            div(class="ProfileCard-content")
+                div(class="row clearfix")
+                    div(class="column col-md-4")
+                        a(class="ProfileCard-avatarLink js-nav js-tooltip", href="/users/#{group_member.id}")
+                            img(class="ProfileCard-avatarImage js-action-profile-avatar", src="#{group_member.profileImageUrl}", style="width:100px; height:100px;")
+                    div(class="column col-md-8")
+                        div(id="user-actions-#{group_member.id}")
+                            - if(group_member_unit_action === 'show_member'){
+                                - if(!group_member.userRelation) {
+                                    button(class="btn btn-primary pull-right js-add-friend", data-target="#{group_member.id}", id="add-friend-#{group_member.id}")
+                                        span Add Friend
+                                script
+                                    $("#add-friend-#{group_member.id}").click(function(event){var posting = $.post('/api/users/#{group_member.id}/friend'); posting.done(function(data){console.log(data);$('#user-actions-#{group_member.id}').html(data)})});
+                                - }
+                            - } else if(group_member_unit_action === 'add_member') {
+                                - if(!group_member.role) {
+                                    button(class="js-add-member btn btn-primary pull-right", data-target="#{group_member.id}", data-target-group="#{groupId}", id="add-member-group-#{group_member.id}")
+                                        span Add Member
+                                    script
+                                        $("#add-member-group-#{group_member.id}").click(function(event){var posting = $.post('/api/group/#{groupId}/user/#{group_member.id}'); posting.done(function(data){$('#user-actions-#{group_member.id}').html(data)})})
+                                -}
+                            - }
+                div(class="ProfileCard-userFields")
+                    div(class="ProfileNameTruncated")
+                        div(class="u-textTruncate u-inlineBlock")
+                            a(class="ProfileNameTruncated-link u-textInheritColor", href="/users/#{group_member.id}") #{group_member.name}

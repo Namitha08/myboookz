@@ -119,20 +119,6 @@ exports.searchFriends = function(req, res) {
     })
 };
 
-exports.searchMembersForGroup = function(req, res) {
-    var userId = req.session.passport.user;
-    var searchString = req.query.q;
-    var groupId = req.query.groupId;
-    neo4jclient.searchFriends(userId, searchString, function(error, users){
-        if(error) {
-            res.errorCode = 500;
-            res.json(error)
-        } else {
-            res.render("user/search_result_users", {users:users.users, user_unit_action:"member", groupId: groupId})
-        }
-    })
-};
-
 exports.updateAddress = function (req, res) {
     var addressId = req.params.id;
     var userId = req.session.passport.user;

@@ -18,57 +18,56 @@ div(class="Grid-cell u-mb10")
                          div(class="row clearfix")
                             include ./book_type_info
                         - } else {
-                        
-                        - if(book.id){
-                        div(class="row clearfix hey")
-                            div(id="book-actions-#{book.id}")
-                                div(class="col-md-12")
-                                    button(class="addwishlist-btn btn btn-default pull-right", data-target="#{book.id}",data-section="book-actions-#{book.id}", id-type="id")
-                                        span(class="glyphicon glyphicon-heart")
-                                        span Wishlist
-                                div(class="col-md-12")
-                                    div(class="btn-group pull-right")
-                                        button(type="button", class="btn btn-default dropdown-toggle pull-right", data-toggle="dropdown", data-section="book-actions-#{book.id}", aria-expanded="false")
-                                            | Read
-                                            span(class="caret")
-                                        ul(class="dropdown-menu", role="menu")
-                                            li
-                                                a(href="#", class="js-read-and-own", data-target="#{book.id}", id-type="id") Read, and I own
-                                            li
-                                                a(href="#", class="js-read", data-target="#{book.id}", id-type="id") I read, dont have    
-                                            li
-                                                a(href="#", class="js-own", data-target="#{book.id}", id-type="id") I own, not read yet
-                                           
-                                            li(class="divider")
-                                            li
-                                                a(href="#", class="js-donate", data-target="#{book.goodreadsId}", id-type="grId") Want to donate
-                                            li
-                                                a(href="#", class="js-donate", data-target="#{book.goodreadsId}", id-type="grId") Want to Sell
-                        - } else {
-                        div(class="row clearfix hey")
-                            div(id="book-actions-#{book.goodreadsId}")
-                                div(class="col-md-12")
-                                    button(class="addwishlist-btn btn btn-default pull-right", data-target="#{book.goodreadsId}", data-section="book-actions-#{book.goodreadsId}", id-type="grId")
-                                        span(class="glyphicon glyphicon-heart")
-                                        span Wishlist
-                                div(class="col-md-12")
-                                    div(class="btn-group pull-right")
-                                        button(type="button", class="btn btn-default dropdown-toggle pull-right", data-toggle="dropdown", data-section="book-actions-#{book.goodreadsId}", aria-expanded="false")
-                                            | Read
-                                            span(class="caret")
-                                        ul(class="dropdown-menu", role="menu")
-                                            li
-                                                a(href="#", class="js-read-and-own", data-target="#{book.goodreadsId}", id-type="grId") Read, and I own
-                                            li
-                                                a(href="#", class="js-read", data-target="#{book.goodreadsId}", id-type="grId") I read, dont have     
-                                            li
-                                                a(href="#", class="js-own", data-target="#{book.goodreadsId}", id-type="grId") I own, not read yet
-                                            li(class="divider")
-                                            li
-                                                a(href="#", class="js-donate", data-target="#{book.goodreadsId}", id-type="grId") Want to donate
-                                            li
-                                                a(href="#", class="js-donate", data-target="#{book.goodreadsId}", id-type="grId") Want to Sell        
-                        - }
+                            - if(book.id){
+                            div(class="row clearfix hey")
+                                div(id="book-actions-#{book.id}")
+                                    div(class="col-md-12")
+                                        button(class="addwishlist-btn btn btn-default pull-right", data-target="#{book.id}",data-section="book-actions-#{book.id}", id-type="id")
+                                            span(class="glyphicon glyphicon-heart")
+                                            span Wishlist
+                                    div(class="col-md-12")
+                                        div(class="btn-group pull-right")
+                                            button(type="button", class="btn btn-default dropdown-toggle pull-right", data-toggle="dropdown", data-section="book-actions-#{book.id}", aria-expanded="false")
+                                                | Read
+                                                span(class="caret")
+                                            ul(class="dropdown-menu", role="menu")
+                                                li
+                                                    a(href="#", class="js-read-and-own", data-target="#{book.id}", id-type="id") Read, and I own
+                                                li
+                                                    a(href="#", class="js-read", data-target="#{book.id}", id-type="id") I read, dont have    
+                                                li
+                                                    a(href="#", class="js-own", data-target="#{book.id}", id-type="id") I own, not read yet
+                                               
+                                                li(class="divider")
+                                                li
+                                                    a(href="#", class="js-donate", data-target="#{book.goodreadsId}", id-type="grId") Want to donate
+                                                li
+                                                    a(href="#", class="js-donate", data-target="#{book.goodreadsId}", id-type="grId") Want to Sell
+                            - } else {
+                            div(class="row clearfix hey")
+                                div(id="book-actions-#{book.goodreadsId}")
+                                    div(class="col-md-12")
+                                        button(class="addwishlist-btn btn btn-default pull-right", data-target="#{book.goodreadsId}", data-section="book-actions-#{book.goodreadsId}", id-type="grId")
+                                            span(class="glyphicon glyphicon-heart")
+                                            span Wishlist
+                                    div(class="col-md-12")
+                                        div(class="btn-group pull-right")
+                                            button(type="button", class="btn btn-default dropdown-toggle pull-right", data-toggle="dropdown", data-section="book-actions-#{book.goodreadsId}", aria-expanded="false")
+                                                | Read
+                                                span(class="caret")
+                                            ul(class="dropdown-menu", role="menu")
+                                                li
+                                                    a(href="#", class="js-read-and-own", data-target="#{book.goodreadsId}", id-type="grId") Read, and I own
+                                                li
+                                                    a(href="#", class="js-read", data-target="#{book.goodreadsId}", id-type="grId") I read, dont have     
+                                                li
+                                                    a(href="#", class="js-own", data-target="#{book.goodreadsId}", id-type="grId") I own, not read yet
+                                                li(class="divider")
+                                                li
+                                                    a(href="#", class="js-donate", data-target="#{book.goodreadsId}", id-type="grId") Want to donate
+                                                li
+                                                    a(href="#", class="js-donate", data-target="#{book.goodreadsId}", id-type="grId") Want to Sell        
+                            - }
                         - }
                 div(class="ProfileCard-userFields")
                     div(class="ProfileNameTruncated")

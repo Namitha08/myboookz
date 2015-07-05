@@ -1,10 +1,10 @@
 div(id="my-books", class="box-border")
     div(class="row books-list")
         div(class="row clearfix")
-            - var n = books.length
+            - var n = books.wishlistBooks.length
             - var i = 0
             - while(i < n){
-            - var book = books[i]
+            - var book = books.wishlistBooks[i]
             - if(i > 0 && i%3 == 0) {
             div(class="row clearfix")
             - }

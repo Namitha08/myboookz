@@ -1,17 +1,58 @@
 extends layout
 block content
-    div(class="container")
+    div(class="home-page-sec-main")
         div(class="row clearfix")
-            div(class="col-md-12 column")
+            div(class="col-md-12 column home-content")
                 div(class="row clearfix")
-                    div(class="col-md-6 column")
-                        div(class="jumbotron")
-                            h1
-                                |Book2Borrow
-                            p
-                                |Book2Borrow will connect with fellow interested readers.
+                    div(class="col-md-12 column center")
+                        img(class="home-logo", src="/images/book-logo.png")
+                        h1 Book For Borrow
+                        h3 Why buy? Borrow
+                        h2 Stay connected with awesome readers around..
 
-                    div(class="col-md-6 column")
-                        div(class="jumbotron")
-                            a(href="/auth/google", id='fb_login_btn')
-                                img(src='/images/sign-in-with-google.png')
+                    div(class="col-md-12 column center")
+                        div(class="row clearfix")
+                            div(class="column col-md-12")
+                                a(href="/auth/google", id='fb_login_btn')
+                                    button(class="btn btn-google-plus btn-lg")
+                                        i(class="fa fa-google-plus")
+                                        | | Connect with Google
+                            div(class="column col-md-12")
+                                div(role="separator" class="divider")
+                            div(class="column col-md-12")
+                                a(href="/auth/facebook")
+                                    button(class="btn btn-lg btn-facebook")
+                                        i(class="fa fa-facebook")
+                                        | | Connect with facebook
+    div(class="home-page-sec-features center")
+        div(class="row clearfix")
+            div(class="col-md-12 column home-content") 
+                h1 How we make your life easy..
+                br
+                h4 Book for borrow will help you getting the book which you want to read next. 
+                br
+                h4 And also helps you to know what other people sorrounding are reading and able to connect with them
+           div(class="row clearfix")
+                div(class="column col-md-4")
+                    div(class="row clearfix")
+                        div(class="col-md-12 column")
+                            img(class="features-logo home-logo", src="/images/note.png")
+                            h1 List
+                            h3 List your books which will help us picking your next right book. 
+                                |This will also help you know your books collection and you can share your pride with your friends.     
+                div(class="column col-md-4")
+                    div(class="row clearfix")
+                        div(class="col-md-12 column")
+                            img(class="features-logo home-logo", src="/images/group.png")
+                            h1 Groups   
+                div(class="column col-md-4")
+                    div(class="row clearfix")
+                        div(class="col-md-12 column")
+                            img(class="features-logo home-logo", src="/images/borrow.png")
+                            h1 Share
+                                
+
+
+
+
+                                        

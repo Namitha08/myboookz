@@ -2,7 +2,7 @@ $(document).ready(function() {
 
     $('.slide-out-div').tabSlideOut({
         tabHandle: '.handle',                              //class of the element that will be your tab
-        pathToTabImage: 'images/feedback.png',          //path to the image for the tab (optionaly can be set using css)
+        pathToTabImage: '/images/feedback.png',          //path to the image for the tab (optionaly can be set using css)
         imageHeight: '122px',                               //height of tab image
         imageWidth: '40px',                               //width of tab image    
         tabLocation: 'left',                               //side of screen where tab lives, top, right, bottom, or left
@@ -160,7 +160,7 @@ $(document).ready(function() {
         })
     });
 
-    $("#my-books-tab-wishlist").on("click", function(event) {
+ /*   $("#my-books-tab-wishlist").on("click", function(event) {
         event.preventDefault();
         var posting = $.get('/api/wishlist');
         posting.done(function(data){
@@ -184,7 +184,7 @@ $(document).ready(function() {
         posting.done(function(data){
             $("#my-books-tab-owned-content-div").replaceWith(data);
         })
-    });
+    }); */
 
     $("#feedback-submit").on("click", function(event) {
         event.preventDefault();

@@ -12,35 +12,29 @@ block content
                             ul
                                 li(class="tab-current")
                                     a(href="#my-books-tab-read-content", id="my-books-tab-read", class="icon icon-home")
-                                        span Read Books(32)
+                                        span Read Books(#{books.readBooks.length})
                                 li(class="")
                                     a(href="#my-books-tab-owned-content", id="my-books-tab-owned", class="icon icon-gift")
-                                        span Owned(12)
+                                        span Owned(#{books.ownedBooks.length})
                                 li(class="")
                                     a(href="#my-books-tab-borrowed-content", id="my-books-tab-borrowed", class="icon icon-upload")
-                                        span Borrowed(2)
+                                        span Borrowed(#{books.borrowedBooks.length})
                                 li
                                     a(href="#my-books-tab-wishlist-content", id="my-books-tab-wishlist", class="icon icon-coffee")
-                                        span Wishlist(10)
-                                li
-                                    a(href="#my-books-tab-lent-content", id="my-books-tab-lent", class="icon icon-config")
-                                        span Lent(7)
-
+                                        span Wishlist(#{books.wishlistBooks.length})
+                                
                         div(class="content-wrap")
                             section(id="my-books-tab-read-content", class="")
                                 div(id="my-books-tab-read-content-div")
                                      include ./book/read_book_details
                             section(id="my-books-tab-owned-content", class="")
                                 div(id="my-books-tab-owned-content-div")
-                                    img(src="/images/loading-x.gif")
+                                    include ./book/owned_book_details
                             section(id="my-books-tab-borrowed-content", class="")
                                 div(id="my-books-tab-borrowed-content-div")
-                                    img(src="/images/loading-x.gif")
+                                    include ./book/borrowed_book_details
                             section(id="my-books-tab-wishlist-content", class="")
                                 div(id="my-books-tab-wishlist-content-div")
-                                    img(src="/images/loading-x.gif")
-                            section(id="my-books-tab-lent-content", class="")
-                                div(id="my-books-tab-lent-content-div")
-                                    img(src="/images/loading-x.gif")
+                                    include ./book/wishlist_book_details
                         script
                             include ./tab.js

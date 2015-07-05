@@ -13,7 +13,7 @@ block content
                     script
                         $('#goodreadsimportmodal').modal('show');
                 -}
-                - if(feed && feed.size > 0) {
+                - if(feed && feed.events.length > 0) {
                     div(class="feed")
                     include ./includes/feed_timeline
                 -} else {

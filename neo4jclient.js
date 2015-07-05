@@ -2,6 +2,81 @@ var exports = module.exports = {};
 var config = require('./config');
 var Client = require('node-rest-client').Client;
 
+const OWNS_RELATION = "OWNS";
+const BORROWED_RELATION = "BORROWED";
+const CURRENTLY_READING_RELATION = "CURRENTLY_READING";
+const ADDRESSES_RELATION = "addresses";
+const GOODREADS_REC_RELATION = "GR_REC";
+const READ_RELATION = "READ";
+const REMINDER_RELATION = "REMINDER_ABOUT";
+const ACTIVITY_RELATION = "ACTIVITY";
+const USER_GROUP_RELATION = "USER_ACCESS";
+const NOTIFICATION_RELATION = "NOTIFICATION";
+const CONNECTED_RELATION = "CONNECTED";
+const WISHLIST_RELATION = "WISH";
+
+const FRIEND_REQ_SENT = "FRIEND_REQ_SENT";
+const FRIEND_REQ_APPROVAL_PENDING = "FRIEND_REQ_APPROVAL_PENDING";
+const ADDRESS_TYPE_HOME = "HOME";
+const ADDRESS_TYPE_WORK = "WORK";
+const ADDRESS_TYPE_OTHER = "OTHER";
+const FRIEND_REQUEST_SENT_NOTIFICATION = "FRIEND_REQUEST_SENT";
+const FRIEND_REQUEST_ACCEPTED_NOTIFICATION = "FRIEND_REQUEST_ACCEPTED";
+
+const AVAILABLE = "AVAILABLE";
+const PRIVATE = "PRIVATE";
+    //const
+const OWNS = OWNS_RELATION;
+const WISHLIST = WISHLIST_RELATION;
+const READ = READ_RELATION;
+const CURRENTLY_READING = CURRENTLY_READING_RELATION;
+const LENT = "LENT";
+const BORROWED = "BORROWED";
+const BORROW_LOCK = "BORROW_LOCK";
+const BORROW_IN_PROGRESS = "BORROW_IN_PROGRESS";
+
+const ALL = "ALL";
+
+const ID = "id";
+const GR_ID = "grId";
+
+const SELF = "SELF";
+
+const BORROW_AGREED = "agreed";
+const BORROW_SUCCESS = "success";
+const BORROW_REJECT = "reject";
+
+const RETURN_INIT = "init";
+const RETURN_AGREED = "agreed";
+const RETURN_SUCCESS = "success";
+
+const ADDRESS_DELETED_EVENT = "ADDRESS_DELETED";
+
+const FRIEND_REQUEST_CANCEL_DELETE = "FRIEND_REQUEST_CANCEL_DELETE";
+const FRIEND_UNFRIEND_DELETE = "FRIEND_REQUEST_CANCEL_DELETE";
+
+const STATUS = "status";
+
+const ACCESS_TOKEN_QPARAM = "accessToken";
+const IN_PROGRESS_GREADS_STATUS = "inProgress";
+const FILTER_QPARAM = "filter";
+const STATUS_QPARAM = STATUS;
+
+const CREATED_BY_QPARAM = "createdBy";
+const REMINDER_ABOUT_QPARM = "reminderAbout";
+const FRESH_NOTIFICATION_TYPE = "fresh";
+const SEARCH_QPARAM = "q";
+const SIZE_QPARAM = "size";
+const INCLUDE_FRIENDS_QPARAM = "includeFriends";
+
+const LISTING_TYPE_QPARAM = "listingType";
+const ID_TYPE_QPARAM = "idType";
+const LOGGED_IN_USER_QPARAM = "loggedInUser";
+const SHARE_PH_QPARAM = "sharePh";
+const MESSAGE_QPARAM = "message";
+const OWNER_USER_ID_QPARAM = "ownerUserId";
+const BORROWER_ID_QPARAM = "borrowerId";
+
 client = new Client();
 
 client.on('error',function(err){
@@ -35,17 +110,31 @@ client.registerMethod("listReminders", baseUrl + "/users/${userId}/reminders", "
 client.registerMethod("updateReminder", baseUrl + "/users/${userId}/reminders/${reminderId}", "PUT");       //done
 client.registerMethod("deleteReminder", baseUrl + "/users/${userId}/reminders/${reminderId}", "DELETE");    //done
 
-client.registerMethod("addBookToUserAsOwn", baseUrl + "/users/${userId}/books/${bookId}/own", "POST"); //mark as book as owned
-client.registerMethod("addBookToUserAsRead", baseUrl + "/users/${userId}/books/${bookId}/read", "POST"); //mark as book as owned
-client.registerMethod("addBookToUserAsReadAndOwn", baseUrl + "/users/${userId}/books/${bookId}/read", "POST"); //mark as book as owned
-client.registerMethod("addBookToWishListForUser", baseUrl + "/users/${userId}/books/${bookId}/wish", "POST");       //{userId}/books/{bookId}/wish
-client.registerMethod("changeBookStatusOfOwnedBook", baseUrl + "/users/${userId}/books/${bookId}/OWN", "PUT");
+//APIS changed
+client.registerMethod("addBookToUserAsOwn", baseUrl + "/books/${bookId}/users/${userId}", "POST"); //?listingType=OWN&status=AVAILABLE&idType=id
+//clientr.egisterMethod("addBookToUserAsOwnByGrId", baseUrl + "/books/${bookId}/users/${userId}", "POST"); //?listingType=OWN&status=AVAILABLE&idType=grId
+
+client.registerMethod("addBookToUserAsRead", baseUrl + "/books/${bookId}/users/${userId}", "POST"); //?listingType=READ&idType=id
+//client.registerMethod("addBookToUserAsReadByGrId", baseUrl + "/books/${bookId}/users/${userId}", "POST"); //?listingType=READ&idType=grId
+
+client.registerMethod("addBookToUserAsReadAndOwn", baseUrl + "/books/${bookId}/users/${userId}", "POST"); //?listingType=READ,OWN&idType=id&status=AVAILABLE
+//client.registerMethod("addBookToUserAsReadAndOwnByGrId", baseUrl + "/books/${bookId}/users/${userId}", "POST"); //?listingType=READ,OWN&idType=id&status=AVAILABLE
+
+client.registerMethod("addBookToWishListForUser", baseUrl + "/books/${bookId}/users/${userId}", "POST"); ////?listingType=WISH&idType=id
+//client.registerMethod("addBookToWishListForUserByGrId", baseUrl + "/books/${bookId}/users/${userId}", "POST"); ////?listingType=WISH&idType=id
+
+client.registerMethod("borrowBook", baseUrl + "/books/${bookId}/borrow", "POST"); // -POST borrow request object
+client.registerMethod("updateStatusToAgreed", baseUrl + "/books/${bookId}/borrow", "PUT"); // ?status=agreed&ownerId=&borrowerId=xyz&sharephone=
+client.registerMethod("updateStatusToSuccess", baseUrl + "/books/${bookId}/borrow", "PUT"); // ?status=agreed&ownerId=&borrowerId=xyz&sharephone=
+
+//till here
 client.registerMethod("getOwnedBooks", baseUrl + "/users/${userId}/books", "GET"); // ?filter=owned         //done
 client.registerMethod("getAvailableBooks", baseUrl + "/users/${userId}/books", "GET"); // ?filter=available
 client.registerMethod("getLentBooks", baseUrl + "/users/${userId}/books", "GET"); // ?filter=lent
 client.registerMethod("getBorrowedBooks", baseUrl + "/users/${userId}/books", "GET"); // ?filter=borrowed
 client.registerMethod("getReadBooks", baseUrl + "/users/${userId}/books", "GET"); // ?filter=read
 client.registerMethod("getWishListBooks", baseUrl + "/users/${userId}/books", "GET"); // ?filter=wishList
+client.registerMethod("getAllBooks", baseUrl + "/users/${userId}/books", "GET"); // ?filter=all
 
 client.registerMethod("getFollowersOfUser", baseUrl + "/users/${userId}/followers", "GET");
 client.registerMethod("getFollowing", baseUrl + "/users/${userId}/following", "GET");
@@ -70,9 +159,6 @@ client.registerMethod("getBookByGoodreadsId", baseUrl + "/books/goodreadsId/${go
 client.registerMethod("getBookByIsbn", baseUrl + "/books/isbn/${isbn}", "GET");
 client.registerMethod("getBookRelatedToUser", baseUrl + "/books/${bookId}/users/${userId}", "GET");
 client.registerMethod("getBookByGrIdRelatedToUser", baseUrl + "/books/goodreadsId/${bookId}/users/${userId}", "GET");
-client.registerMethod("borrowBook", baseUrl + "/books/${bookId}/borrow", "POST"); // -POST borrow request object
-client.registerMethod("updateStatusToAgreed", baseUrl + "/books/${bookId}/users/${userId}/borrow", "PUT"); // ?status=agreed&borrowerId=xyz&sharephone=? - Which will lock the book for the exchange
-client.registerMethod("updateStatusToSuccess", baseUrl + "/books/${bookId}/users/${userId}/borrow", "PUT"); // ?status=success&borrowerId=xyz
 //Groups
 client.registerMethod("addGroup", baseUrl + "/groups", "POST");
 client.registerMethod("getGroup", baseUrl + "/groups/${groupId}", "GET")
@@ -82,6 +168,7 @@ client.registerMethod("getGroupsOfUser", baseUrl + "/users/${userId}/groups", "G
 client.registerMethod("getGroupMembers", baseUrl + "/groups/${groupId}/users", "GET");
 client.registerMethod("getGroupAvailableBooks", baseUrl + "/groups/${groupId}/books", "GET"); //?filter=available
 client.registerMethod("getGroupWishListBooks", baseUrl + "/groups/${groupId}/books", "GET"); //?filter=lookingfor
+client.registerMethod("searchToAddGroupMembers", baseUrl + "/groups/${groupId}/search/users", "GET") //?q=searchString
 //search
 client.registerMethod("searchBooks", baseUrl + "/books/search", "GET") //?q=xyz
 client.registerMethod("searchUsers", baseUrl + "/users/${userId}/search", "GET") //?q=xyz
@@ -93,7 +180,6 @@ client.registerMethod("getRandomUsers", baseUrl + "/users/random", "GET") //?siz
 client.registerMethod("getFreshNotifications", baseUrl + "/users/${userId}/notifications", "GET") //?filter=fresh
 client.registerMethod("getAllNotifications", baseUrl + "/users/${userId}/notifications", "GET") //?filter=all
 client.registerMethod("removeFreshNotifications", baseUrl + "/users/${userId1}/notifications", "DELETE")
-
 
 exports.removeFreshNotifications = function(userId, cb) {
     var args = getArguments();
@@ -200,7 +286,7 @@ exports.addFriend = function(currentUserId, friendId, cb) {
 exports.addBookToUserAsOwn = function(userId, bookId, idType, cb) {
     var args = getArguments();
     args.path = {userId: userId, bookId: bookId};
-    args.parameters = {idType:idType}
+    args.parameters = {ID_TYPE_QPARAM:idType, LISTING_TYPE_QPARAM:OWNS}
     client.methods.addBookToUserAsOwn(args, function(data, response){
         if(response.statusCode != 200){
             cb(data, null);
@@ -213,7 +299,7 @@ exports.addBookToUserAsOwn = function(userId, bookId, idType, cb) {
 exports.addBookToUserAsRead = function(userId, bookId, idType, cb) {
     var args = getArguments();
     args.path = {userId: userId, bookId: bookId};
-    args.parameters = {idType:idType}
+    args.parameters = {ID_TYPE_QPARAM:idType, LISTING_TYPE_QPARAM:READ}
     client.methods.addBookToUserAsRead(args, function(data, response){
         if(response.statusCode != 200){
             cb(data, null);
@@ -223,12 +309,10 @@ exports.addBookToUserAsRead = function(userId, bookId, idType, cb) {
     })
 };
 
-
-
 exports.addBookToWishListForUser = function(userId, bookId, idType, cb) {
     var args = getArguments();
     args.path = {userId: userId, bookId: bookId};
-    args.parameters = {idType:idType}
+    args.parameters = {ID_TYPE_QPARAM:idType, LISTING_TYPE_QPARAM:WISHLIST}
     client.methods.addBookToWishListForUser(args, function(data, response){
         if(response.statusCode != 200){
             cb(data, null);
@@ -264,9 +348,10 @@ exports.getGroupWishListBooks = function(groupId, cb) {
     })
 };
 
-exports.getGroupMembers = function(groupId, cb) {
+exports.getGroupMembers = function(groupId, loggedInUser, cb) {
     var args = getArguments();
     args.path = {groupId: groupId};
+    args.parameters = {loggedInUser: loggedInUser}
     client.methods.getGroupMembers(args, function(data, response){
         if(response.statusCode != 200){
             cb(data, null);
@@ -328,7 +413,6 @@ exports.searchUsers = function(userId, searchString, cb) {
     })
 };
 
-
 exports.getGroupsOfUser = function(userId, cb) {
     var args = getArguments();
     args.path = {userId: userId};
@@ -386,6 +470,19 @@ exports.getGroupWithMembers = function(groupId, userId, cb) {
     })
 };
 
+exports.searchToAddGroupMembers = function(groupId, searchString, loggedInUser, cb) {
+    var args = getArguments();
+    args.parameters = {q:searchString, loggedInUser:loggedInUser};
+    args.path = {groupId: groupId};
+    client.methods.searchToAddGroupMembers(args, function(data, response){
+        if(response.statusCode != 200){
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    })
+};
+
 exports.getGroup = function(groupId, cb) {
     var args = getArguments();
     args.path = {groupId: groupId};
@@ -410,9 +507,9 @@ exports.getUserTimeLineFeed = function(userId, cb) {
     args.path = {userId:userId};
     client.methods.getUserTimeLineFeed(args, function(data, response){
         if(response.statusCode != 200){
-            
             cb(data, null);
         } else {
+            console.log("FeedData" + JSON.stringify(data));
             cb(null, data);
         }
     });
@@ -431,7 +528,7 @@ exports.getUserActityFeed = function(userId, cb) {
 };
 
 exports.addAddress = function(address, userId, cb) {
-    var args = getArguments();
+    var args = getArguments()
     
     args.data = address;
     args.path = {userId: userId};
@@ -680,6 +777,19 @@ exports.getReadBooks = function(id, cb) {
     var args = getArguments();
     args.path = {userId: id};
     args.parameters = {"filter": "read"};
+    client.methods.getReadBooks(args, function(data, response){
+        if(response.statusCode != 200){
+            cb(data, null);
+        } else {
+            cb(null, data);
+        }
+    });
+};
+
+exports.getAllBooks = function(id, cb) {
+    var args = getArguments();
+    args.path = {userId: id};
+    args.parameters = {"filter": "all"};
     client.methods.getReadBooks(args, function(data, response){
         if(response.statusCode != 200){
             cb(data, null);
